@@ -1,0 +1,34 @@
+:root {
+    --bg-grad: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0fdf4 100%);
+}
+
+body { background: var(--bg-grad); min-height: 100vh; transition: 0.3s; background-attachment: fixed; }
+
+.navbar { background-color: rgba(15, 23, 42, 0.92) !important; backdrop-filter: blur(10px); }
+.logo-icon { color: #f87171; animation: heart 1.5s infinite; }
+
+@keyframes heart { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
+/* ALARMA VISUAL */
+.alarma-v { border: 4px solid #0ea5e9 !important; animation: pulse-v 2s infinite !important; }
+@keyframes pulse-v { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(14, 165, 233, 0.5); } }
+
+.task-card { border-radius: 1.25rem; transition: 0.3s; background: rgba(255, 255, 255, 0.9); border: none; }
+.task-done { opacity: 0.5; filter: grayscale(1); border: 3px solid #10b981 !important; }
+
+/* MODO NOCHE: Gris muy oscuro y azul medianoche */
+body.skin-dark { background: #0f172a !important; background-image: none !important; color: #f8fafc; }
+body.skin-dark .card, 
+body.skin-dark .bg-white, 
+body.skin-dark .modal-content { background: #1e293b !important; color: #f1f5f9 !important; border: 1px solid #334155 !important; }
+body.skin-dark .text-muted { color: #94a3b8 !important; }
+body.skin-dark .navbar { background: #020617 !important; }
+
+/* ACCESIBILIDAD: Alto Contraste Extremo (Negro y Amarillo) */
+body.skin-access { background: #000000 !important; background-image: none !important; color: #ffff00 !important; font-size: 1.4rem !important; }
+body.skin-access .card, 
+body.skin-access .bg-white, 
+body.skin-access .modal-content { background: #000000 !important; color: #ffff00 !important; border: 5px solid #ffff00 !important; }
+body.skin-access .btn-primary, body.skin-access .btn-danger { background: #ffff00 !important; color: #000 !important; border: 2px solid #fff !important; font-weight: 900 !important; font-size: 1.5rem !important; }
+body.skin-access .badge { background: #ffff00 !important; color: #000 !important; font-size: 1.2rem; }
+body.skin-access .text-muted, body.skin-access .text-primary { color: #ffff00 !important; }
