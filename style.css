@@ -15,6 +15,13 @@ body { background: var(--bg-grad); min-height: 100vh; transition: 0.3s; backgrou
 
 .task-card { border-radius: 1.25rem; transition: 0.3s; background: rgba(255, 255, 255, 0.9); border: none; }
 .task-done { opacity: 0.5; filter: grayscale(1); border: 3px solid #10b981 !important; }
+.task-proxima { border: 3px solid #fbbf24 !important; box-shadow: 0 0 20px rgba(251, 191, 36, 0.3) !important; }
+.task-retrasada { border: 3px solid #ef4444 !important; animation: pulse-red 2s infinite; }
+
+@keyframes pulse-red {
+    0%, 100% { box-shadow: 0 0 0 rgba(239, 68, 68, 0.4); }
+    50% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.6); }
+}
 
 /* MODO NOCHE: Gris muy oscuro y azul medianoche */
 body.skin-dark { background: #0f172a !important; background-image: none !important; color: #f8fafc; }

@@ -1,6 +1,8 @@
 let meds = JSON.parse(localStorage.getItem('vitaData')) || [];
 let filtroActual = 'mañana';
 let chartInstance = null;
+let rachaActual = parseInt(localStorage.getItem('vitaRacha')) || 0;
+let historialDias = JSON.parse(localStorage.getItem('vitaHistorial')) || [];
 
 window.onload = () => {
     // 1. LIMPIEZA DE DATOS (Arregla el error de split)
@@ -10,14 +12,44 @@ window.onload = () => {
         return m;
     });
 
+    // Limpiar historial del día actual si no está completado
+    const hoy = new Date().toLocaleDateString();
+    const indexHoy = historialDias.findIndex(h => h.fecha === hoy);
+    if(indexHoy !== -1) {
+        // Verificar si realmente está completado
+        let total = 0, hechos = 0;
+        meds.forEach(m => {
+            const vigente = m.manual || (m.duracionDias - Math.floor((new Date().setHours(0,0,0,0) - m.fechaInicio) / 86400000) > 0);
+            if (vigente) {
+                if (m.manual) {
+                    total++; if(m.mHecho || m.tHecho || m.nHecho) hechos++;
+                } else {
+                    total += m.tomasAlDia;
+                    if(m.mHecho) hechos++; if(m.tomasAlDia === 3 && m.tHecho) hechos++; if(m.tomasAlDia >= 2 && m.nHecho) hechos++;
+                }
+            }
+        });
+        const p = total ? Math.round((hechos / total) * 100) : 0;
+        if(p < 100) {
+            historialDias.splice(indexHoy, 1);
+            localStorage.setItem('vitaHistorial', JSON.stringify(historialDias));
+        }
+    }
+
     initChart();
+    calcularRacha();
+    actualizarMiniCalendario();
     
-    // 2. RELOJ
+    // 2. RELOJ Y WIDGETS DINÁMICOS
     setInterval(() => {
         const ahora = new Date();
         const el = document.getElementById('reloj');
         if(el) el.innerText = ahora.toLocaleTimeString();
-        document.getElementById('statusDia').innerText = ahora.toLocaleDateString();
+        const statusEl = document.getElementById('statusDia');
+        if(statusEl) statusEl.querySelector('.fw-bold').innerText = ahora.toLocaleDateString();
+        
+        actualizarProximaToma();
+        actualizarAlertas();
     }, 1000);
 
     // 3. SOS REACTIVO
@@ -105,6 +137,8 @@ function render() {
     const cont = document.getElementById('listaTareas');
     const busq = document.getElementById('buscador').value.toLowerCase();
     const hoyMs = new Date().setHours(0,0,0,0);
+    const ahora = new Date();
+    const horaActual = ahora.getHours() * 60 + ahora.getMinutes();
 
     if(!cont) return;
 
@@ -132,9 +166,32 @@ function render() {
         const horaDisplay = calcularHoraTurno(m.hora, filtroActual, m.manual);
         const etiqueta = m.manual ? `<span class="badge bg-light text-dark border">💊 Automedicación</span>` : `<small class="text-muted">Quedan ${diasRestantes} días</small>`;
 
+        // Calcular estado visual SOLO si estamos en el turno correspondiente
+        const [h, min] = horaDisplay.split(':').map(Number);
+        const minToma = h * 60 + min;
+        
+        // Determinar si el turno actual ya llegó
+        const turnoActualEmpezado = 
+            (filtroActual === 'mañana' && horaActual >= 6 * 60) || // 6:00 AM
+            (filtroActual === 'tarde' && horaActual >= 13 * 60) || // 1:00 PM
+            (filtroActual === 'noche' && horaActual >= 20 * 60);   // 8:00 PM
+        
+        let claseEstado = '';
+        if(hecho) {
+            claseEstado = 'task-done';
+        } else if(turnoActualEmpezado) {
+            // Solo aplicar colores de urgencia si el turno ya comenzó
+            const difMinutos = horaActual - minToma;
+            if(difMinutos > 0) {
+                claseEstado = 'task-retrasada'; // Pasó la hora
+            } else if(difMinutos > -60) {
+                claseEstado = 'task-proxima'; // Menos de 1 hora
+            }
+        }
+
         return `
         <div class="col">
-            <div class="card h-100 shadow-sm task-card ${hecho ? 'task-done border-success' : ''}">
+            <div class="card h-100 shadow-sm task-card ${claseEstado}">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
@@ -160,6 +217,223 @@ function render() {
  * ESTADÍSTICAS: Ahora el gráfico avanza siempre
  */
 function updateStats() {
+    let total = 0, hechos = 0;
+    meds.forEach(m => {
+        const vigente = m.manual || (m.duracionDias - Math.floor((new Date().setHours(0,0,0,0) - m.fechaInicio) / 86400000) > 0);
+        if (vigente) {
+            if (m.manual) {
+                total++; if(m.mHecho || m.tHecho || m.nHecho) hechos++;
+            } else {
+                total += m.tomasAlDia;
+                if(m.mHecho) hechos++; if(m.tomasAlDia === 3 && m.tHecho) hechos++; if(m.tomasAlDia >= 2 && m.nHecho) hechos++;
+            }
+        }
+    });
+    const p = total ? Math.round((hechos / total) * 100) : 0;
+    if(chartInstance) { chartInstance.data.datasets[0].data = [p, 100-p]; chartInstance.update(); }
+    document.getElementById('porcentajeTxt').innerText = p + '%';
+    
+    // Actualizar resumen de tomas
+    const resumenEl = document.getElementById('resumenTomas');
+    if(resumenEl) resumenEl.innerText = `${hechos} de ${total} tomas`;
+    
+    // Gestión dinámica de la racha
+    const hoy = new Date().toLocaleDateString();
+    const indexHoy = historialDias.findIndex(h => h.fecha === hoy);
+    
+    if(p === 100 && total > 0) {
+        // Día completado
+        if(indexHoy === -1) {
+            // Añadir el día si no existe
+            historialDias.push({ fecha: hoy, cumplido: true });
+            localStorage.setItem('vitaHistorial', JSON.stringify(historialDias.slice(-30)));
+            calcularRacha();
+        }
+    } else {
+        // Día no completado o parcial
+        if(indexHoy !== -1) {
+            // Eliminar el día si existía como completado
+            historialDias.splice(indexHoy, 1);
+            localStorage.setItem('vitaHistorial', JSON.stringify(historialDias));
+            calcularRacha();
+        }
+    }
+}
+
+/**
+ * WIDGET: Próxima Toma con Countdown
+ */
+function actualizarProximaToma() {
+    const ahora = new Date();
+    const horaActual = ahora.getHours() * 60 + ahora.getMinutes();
+    
+    let proximaMed = null;
+    let menorDif = Infinity;
+    
+    meds.forEach(m => {
+        const hoyMs = new Date().setHours(0,0,0,0);
+        const vigente = m.manual || (m.duracionDias - Math.floor((hoyMs - m.fechaInicio) / 86400000) > 0);
+        if(!vigente) return;
+        
+        const turnos = [];
+        if(m.manual) {
+            turnos.push({ turno: m.turnoAuto, hora: m.hora, hecho: m.mHecho || m.tHecho || m.nHecho });
+        } else {
+            turnos.push({ turno: 'mañana', hora: m.hora, hecho: m.mHecho });
+            if(m.tomasAlDia === 3) turnos.push({ turno: 'tarde', hora: calcularHoraTurno(m.hora, 'tarde', false), hecho: m.tHecho });
+            if(m.tomasAlDia >= 2) turnos.push({ turno: 'noche', hora: calcularHoraTurno(m.hora, 'noche', false), hecho: m.nHecho });
+        }
+        
+        turnos.forEach(t => {
+            if(t.hecho) return;
+            const [h, min] = t.hora.split(':').map(Number);
+            const minToma = h * 60 + min;
+            const dif = minToma - horaActual;
+            
+            if(dif > 0 && dif < menorDif) {
+                menorDif = dif;
+                proximaMed = { nombre: m.nombre, hora: t.hora, minutos: dif };
+            }
+        });
+    });
+    
+    const widget = document.getElementById('widgetProxima');
+    if(proximaMed) {
+        widget.classList.remove('d-none');
+        document.getElementById('proximaNombre').innerText = proximaMed.nombre;
+        document.getElementById('proximaHora').innerText = proximaMed.hora;
+        
+        const horas = Math.floor(proximaMed.minutos / 60);
+        const mins = proximaMed.minutos % 60;
+        document.getElementById('proximaCountdown').innerText = `${horas}h ${mins}m`;
+        
+        // Cambiar color si es urgente (menos de 30 min)
+        if(proximaMed.minutos < 30) {
+            widget.classList.remove('alert-warning');
+            widget.classList.add('alert-danger');
+        } else {
+            widget.classList.remove('alert-danger');
+            widget.classList.add('alert-warning');
+        }
+    } else {
+        widget.classList.add('d-none');
+    }
+}
+
+/**
+ * WIDGET: Sistema de Alertas
+ */
+function actualizarAlertas() {
+    const listaAlertas = document.getElementById('listaAlertas');
+    if(!listaAlertas) return;
+    
+    const alertas = [];
+    const hoyMs = new Date().setHours(0,0,0,0);
+    
+    meds.forEach(m => {
+        if(m.manual) return;
+        const diasRestantes = m.duracionDias - Math.floor((hoyMs - m.fechaInicio) / 86400000);
+        if(diasRestantes > 0 && diasRestantes <= 3) {
+            alertas.push(`⚠️ <strong>${m.nombre}</strong> se acaba en ${diasRestantes} día${diasRestantes > 1 ? 's' : ''}`);
+        }
+    });
+    
+    if(alertas.length === 0) {
+        listaAlertas.innerHTML = '<div class="alert alert-success mb-0 py-2">✓ Todo al día, sin alertas</div>';
+    } else {
+        listaAlertas.innerHTML = alertas.map(a => `<div class="alert alert-warning mb-0 py-2">${a}</div>`).join('');
+    }
+}
+
+/**
+ * WIDGET: Racha de Días Consecutivos
+ */
+function calcularRacha() {
+    // Ordenar historial por fecha (más reciente primero)
+    historialDias.sort((a, b) => new Date(b.fecha.split('/').reverse().join('-')) - new Date(a.fecha.split('/').reverse().join('-')));
+    
+    let racha = 0;
+    const hoy = new Date();
+    const hoyStr = hoy.toLocaleDateString();
+    
+    // Verificar si hoy está completado
+    const hoyCompleto = historialDias.some(h => h.fecha === hoyStr && h.cumplido);
+    
+    // Empezar desde ayer (i=1) si hoy no está completo, o desde hoy (i=0) si lo está
+    const iniciar = hoyCompleto ? 0 : 1;
+    
+    for(let i = iniciar; i <= 30; i++) {
+        const fecha = new Date(hoy);
+        fecha.setDate(fecha.getDate() - i);
+        const fechaStr = fecha.toLocaleDateString();
+        
+        const diaEnHistorial = historialDias.find(h => h.fecha === fechaStr && h.cumplido);
+        
+        if(diaEnHistorial) {
+            racha++;
+        } else {
+            // Si un día no está completado, se rompe la racha
+            break;
+        }
+    }
+    
+    rachaActual = racha;
+    localStorage.setItem('vitaRacha', rachaActual);
+    actualizarRacha();
+    actualizarMiniCalendario();
+}
+
+function actualizarRacha() {
+    const rachaEl = document.getElementById('rachaTexto');
+    const subtextoEl = document.getElementById('rachaSubtexto');
+    if(!rachaEl) return;
+    
+    rachaEl.innerHTML = `<span class="text-warning">🔥</span> ${rachaActual} día${rachaActual !== 1 ? 's' : ''}`;
+    
+    if(rachaActual === 0) {
+        subtextoEl.innerText = '¡Completa hoy para empezar!';
+    } else {
+        subtextoEl.innerText = `¡Sigue así! ${rachaActual} día${rachaActual !== 1 ? 's' : ''} consecutivo${rachaActual !== 1 ? 's' : ''}`;
+    }
+}
+
+/**
+ * WIDGET: Mini Calendario (últimos 7 días)
+ */
+function actualizarMiniCalendario() {
+    const calEl = document.getElementById('miniCalendario');
+    if(!calEl) return;
+    
+    const dias = [];
+    for(let i = 6; i >= 0; i--) {
+        const fecha = new Date();
+        fecha.setDate(fecha.getDate() - i);
+        const fechaStr = fecha.toLocaleDateString();
+        const dia = fecha.toLocaleDateString('es-ES', { weekday: 'short' })[0].toUpperCase();
+        
+        const cumplido = historialDias.some(h => h.fecha === fechaStr && h.cumplido);
+        const esHoy = i === 0;
+        
+        let icono = '○';
+        let color = 'text-muted';
+        if(cumplido) {
+            icono = '●';
+            color = 'text-success';
+        } else if(esHoy) {
+            icono = '◐';
+            color = 'text-primary';
+        }
+        
+        dias.push(`<div class="text-center"><small class="text-muted d-block">${dia}</small><span class="${color} fs-5">${icono}</span></div>`);
+    }
+    
+    calEl.innerHTML = dias.join('');
+}
+
+/**
+ * ESTADÍSTICAS: Ahora el gráfico avanza siempre
+ */
+function updateStats_OLD() {
     let total = 0, hechos = 0;
     meds.forEach(m => {
         const vigente = m.manual || (m.duracionDias - Math.floor((new Date().setHours(0,0,0,0) - m.fechaInicio) / 86400000) > 0);
@@ -206,8 +480,13 @@ function setSkin(s) {
 function revisarNuevoDia() {
     const hoy = new Date().toLocaleDateString();
     if(localStorage.getItem('lastCheck') !== hoy) {
+        // Resetear todas las tomas del día
         meds = meds.map(m => { m.mHecho = false; m.tHecho = false; m.nHecho = false; return m; });
         localStorage.setItem('lastCheck', hoy);
+        
+        // Recalcular la racha basándose en el historial
+        calcularRacha();
+        
         sync();
     }
 }
