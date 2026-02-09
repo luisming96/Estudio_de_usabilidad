@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VitaClick | Comunicacion</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="skin-base" data-page="comunicacion">
+    <a class="skip-link" href="#mainContent">Saltar al contenido</a>
+
+    <nav class="navbar navbar-expand-lg navbar-light nav-main sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <span class="me-2"><i class="bi bi-heart-pulse-fill logo-icon"></i></span>VitaClick
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain" aria-controls="navMain" aria-expanded="false" aria-label="Abrir menú">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navMain">
+                <ul class="navbar-nav mx-auto gap-lg-3 align-items-lg-center">
+                    <li class="nav-item"><a class="nav-link" data-nav="inicio" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a id="navDashboard" class="nav-link" data-nav="dashboard" href="dashboard.html">Mi Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="salud" href="salud.html">Salud Personal</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="seguimiento" href="seguimiento.html">Seguimiento</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="analisis" href="analisis.html">Analisis</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="sobre" href="sobre.html">Sobre Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="mapa" href="mapa.html">Mapa Web</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-2">
+                    <a class="btn btn-outline-primary btn-sm position-relative" href="alertas.html" aria-label="Centro de alertas">
+                        <i class="bi bi-bell"></i>
+                        <span id="alertBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">0</span>
+                    </a>
+                    <select id="skinSelector" class="form-select form-select-sm skin-select" aria-label="Cambiar tema visual">
+                        <option value="base">Skin Base</option>
+                        <option value="good">Skin Mejorada</option>
+                        <option value="access">Skin Accesible</option>
+                    </select>
+                    <a class="btn btn-outline-secondary btn-sm" href="login.html">Acceder</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main id="mainContent" class="section-block">
+        <div class="container">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Comunicacion</h1>
+                    <p class="page-subtitle">Mensajes del medico y alertas prioritarias en un mismo lugar.</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="dash-card">
+                        <h6 class="mb-3">Mensajes del medico</h6>
+                        <div id="mensajesPaciente" class="d-flex flex-column gap-2"></div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="dash-card">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="mb-0">Alertas</h6>
+                            <a class="small" href="alertas.html">Ver centro completo</a>
+                        </div>
+                        <ul class="nav nav-pills pill-nav mb-4" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#alertasTodas" type="button" role="tab">Todas</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#alertasSinLeer" type="button" role="tab">Sin leer</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#alertasRecordatorios" type="button" role="tab">Recordatorios</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#alertasInteracciones" type="button" role="tab">Interacciones</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#alertasEmergencias" type="button" role="tab">Emergencias</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="alertasTodas" role="tabpanel">
+                                <div id="alertasTodasList" class="d-flex flex-column gap-3"></div>
+                            </div>
+                            <div class="tab-pane fade" id="alertasSinLeer" role="tabpanel">
+                                <div id="alertasSinLeerList" class="d-flex flex-column gap-3"></div>
+                            </div>
+                            <div class="tab-pane fade" id="alertasRecordatorios" role="tabpanel">
+                                <div id="alertasRecordatoriosList" class="d-flex flex-column gap-3"></div>
+                            </div>
+                            <div class="tab-pane fade" id="alertasInteracciones" role="tabpanel">
+                                <div id="alertasInteraccionesList" class="d-flex flex-column gap-3"></div>
+                            </div>
+                            <div class="tab-pane fade" id="alertasEmergencias" role="tabpanel">
+                                <div id="alertasEmergenciasList" class="d-flex flex-column gap-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="../assets/js/main.js"></script>
+</body>
+</html>

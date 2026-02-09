@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VitaClick | Seguimiento</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="skin-base" data-page="seguimiento">
+    <a class="skip-link" href="#mainContent">Saltar al contenido</a>
+
+    <nav class="navbar navbar-expand-lg navbar-light nav-main sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <span class="me-2"><i class="bi bi-heart-pulse-fill logo-icon"></i></span>VitaClick
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain" aria-controls="navMain" aria-expanded="false" aria-label="Abrir menú">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navMain">
+                <ul class="navbar-nav mx-auto gap-lg-3 align-items-lg-center">
+                    <li class="nav-item"><a class="nav-link" data-nav="inicio" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a id="navDashboard" class="nav-link" data-nav="dashboard" href="dashboard.html">Mi Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="salud" href="salud.html">Salud Personal</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="seguimiento" href="seguimiento.html">Seguimiento</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="analisis" href="analisis.html">Analisis</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="sobre" href="sobre.html">Sobre Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="mapa" href="mapa.html">Mapa Web</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-2">
+                    <a class="btn btn-outline-primary btn-sm position-relative" href="alertas.html" aria-label="Centro de alertas">
+                        <i class="bi bi-bell"></i>
+                        <span id="alertBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">0</span>
+                    </a>
+                    <select id="skinSelector" class="form-select form-select-sm skin-select" aria-label="Cambiar tema visual">
+                        <option value="base">Skin Base</option>
+                        <option value="good">Skin Mejorada</option>
+                        <option value="access">Skin Accesible</option>
+                    </select>
+                    <a class="btn btn-outline-secondary btn-sm" href="login.html">Acceder</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main id="mainContent" class="section-block">
+        <div class="container">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Seguimiento</h1>
+                    <p class="page-subtitle">Revision clara de tu adherencia, progreso y tendencias.</p>
+                </div>
+            </div>
+
+            <div class="dashboard-section-title">Adherencia</div>
+            <div class="row g-4 align-items-stretch">
+                <div class="col-lg-6">
+                    <div class="dash-card">
+                        <h6 class="mb-3">Adherencia diaria</h6>
+                        <div class="position-relative" style="height: 220px;">
+                            <canvas id="graficoProgreso"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="dash-card">
+                        <h6 class="mb-3">Ultimos 7 dias</h6>
+                        <div class="d-flex justify-content-between" id="miniCalendario"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-section-title">Resumen</div>
+            <div class="row g-4 align-items-stretch">
+                <div class="col-lg-6">
+                    <div class="dash-card">
+                        <h6 class="mb-3">Estadisticas generales</h6>
+                        <div class="stat-grid">
+                            <div class="stat-box">
+                                <div class="small text-muted">Medicamentos activos</div>
+                                <div id="statsTotalMeds" class="fw-bold">0</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="small text-muted">Tomas completadas</div>
+                                <div id="statsTomas" class="fw-bold">0</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="small text-muted">Adherencia</div>
+                                <div id="statsAdherencia" class="fw-bold">0%</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="small text-muted">Alertas activas</div>
+                                <div id="statsAlertas" class="fw-bold">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="dash-card">
+                        <h6 class="mb-3">Farmacias cercanas</h6>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                            <input id="farmaciaQuery" type="text" class="form-control" placeholder="Buscar por barrio o ciudad">
+                        </div>
+                        <div id="farmaciasList" class="d-flex flex-column gap-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="../assets/js/main.js"></script>
+</body>
+</html>

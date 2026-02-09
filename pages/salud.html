@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VitaClick | Salud Personal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="skin-base" data-page="salud">
+    <a class="skip-link" href="#mainContent">Saltar al contenido</a>
+
+    <nav class="navbar navbar-expand-lg navbar-light nav-main sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <span class="me-2"><i class="bi bi-heart-pulse-fill logo-icon"></i></span>VitaClick
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain" aria-controls="navMain" aria-expanded="false" aria-label="Abrir menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navMain">
+                <ul class="navbar-nav mx-auto gap-lg-3 align-items-lg-center">
+                    <li class="nav-item"><a class="nav-link" data-nav="inicio" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a id="navDashboard" class="nav-link" data-nav="dashboard" href="dashboard.html">Mi Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="salud" href="salud.html">Salud Personal</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="seguimiento" href="seguimiento.html">Seguimiento</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="analisis" href="analisis.html">Analisis</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="sobre" href="sobre.html">Sobre Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="mapa" href="mapa.html">Mapa Web</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-2">
+                    <a class="btn btn-outline-primary btn-sm position-relative" href="alertas.html" aria-label="Centro de alertas">
+                        <i class="bi bi-bell"></i>
+                        <span id="alertBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">0</span>
+                    </a>
+                    <select id="skinSelector" class="form-select form-select-sm skin-select" aria-label="Cambiar tema visual">
+                        <option value="base">Skin Base</option>
+                        <option value="good">Skin Mejorada</option>
+                        <option value="access">Skin Accesible</option>
+                    </select>
+                    <a class="btn btn-outline-secondary btn-sm" href="login.html">Acceder</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main id="mainContent" class="section-block">
+        <div class="container">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Salud Personal</h1>
+                    <p class="page-subtitle">Tu perfil clinico, historial y recursos de apoyo medico en un solo lugar.</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-7">
+                    <div class="dash-card">
+                        <h6 class="mb-3">Perfil medico</h6>
+                        <form id="profileForm" class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nombre completo</label>
+                                <input id="perfilNombre" type="text" class="form-control" placeholder="Tu nombre">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Grupo sanguineo</label>
+                                <select id="perfilSangre" class="form-select">
+                                    <option value="">Selecciona</option>
+                                    <option>A+</option>
+                                    <option>A-</option>
+                                    <option>B+</option>
+                                    <option>B-</option>
+                                    <option>AB+</option>
+                                    <option>AB-</option>
+                                    <option>O+</option>
+                                    <option>O-</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Alergias conocidas</label>
+                                <input id="perfilAlergias" type="text" class="form-control" placeholder="Penicilina, gluten...">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Enfermedades cronicas</label>
+                                <input id="perfilCronicas" type="text" class="form-control" placeholder="Diabetes, hipertension...">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Telefono de emergencia</label>
+                                <input id="perfilTelefono" type="tel" class="form-control" placeholder="Numero familiar">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Medico de referencia</label>
+                                <input id="perfilMedico" type="text" class="form-control" placeholder="Nombre del medico">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Notas importantes</label>
+                                <textarea id="perfilNotas" class="form-control" rows="3" placeholder="Observaciones relevantes"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="button" id="saveProfile" class="btn btn-primary">Guardar perfil</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="dash-card health-drug-card mb-4">
+                        <div class="health-card-header">
+                            <div>
+                                <h6 class="mb-1">Consulta medicamento</h6>
+                                <p class="small text-muted mb-0">Busca indicaciones y advertencias oficiales.</p>
+                            </div>
+                            <span class="health-badge"><i class="bi bi-capsule"></i></span>
+                        </div>
+                        <form id="drugForm" class="d-flex gap-2">
+                            <input id="drugQuery" type="text" class="form-control" placeholder="Ej: ibuprofeno" required>
+                            <button class="btn btn-primary" type="submit">Buscar</button>
+                        </form>
+                        <div id="drugResult" class="health-drug-result d-none">
+                            <div class="health-drug-title" id="drugName"></div>
+                            <div class="small text-muted" id="drugPurpose"></div>
+                            <div class="health-drug-block">
+                                <div class="health-drug-label">Indicaciones</div>
+                                <div id="drugIndications"></div>
+                            </div>
+                            <div class="health-drug-block">
+                                <div class="health-drug-label">Advertencias</div>
+                                <div id="drugWarnings"></div>
+                            </div>
+                            <div class="small text-muted">Fuente: openFDA</div>
+                        </div>
+                        <div id="drugEmpty" class="small text-muted mt-2">Los datos pueden variar segun el pais.</div>
+                    </div>
+                    <div class="dash-card">
+                        <h6 class="mb-3">Info oficial</h6>
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2">
+                                <a href="https://www.aemps.gob.es/" target="_blank" rel="noopener">AEMPS - Medicamentos</a>
+                                <div class="small text-muted">Fichas oficiales y alertas.</div>
+                            </li>
+                            <li class="mb-2">
+                                <a href="https://medlineplus.gov/spanish/" target="_blank" rel="noopener">MedlinePlus (ES)</a>
+                                <div class="small text-muted">Informacion sanitaria fiable.</div>
+                            </li>
+                            <li>
+                                <a href="https://www.sanidad.gob.es/" target="_blank" rel="noopener">Ministerio de Sanidad</a>
+                                <div class="small text-muted">Recomendaciones y guias.</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-section-title">Historial clinico</div>
+            <div class="dash-card">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                    <div class="fw-bold">Registro clinico</div>
+                    <button id="addHistorial" class="btn btn-sm btn-outline-primary">Agregar registro</button>
+                </div>
+                <div class="row g-3 mb-3">
+                    <div class="col-md-3">
+                        <input id="historialFecha" type="date" class="form-control" aria-label="Fecha de exploracion">
+                    </div>
+                    <div class="col-md-3">
+                        <input id="historialPatologia" type="text" class="form-control" placeholder="Patologia" />
+                    </div>
+                    <div class="col-md-3">
+                        <input id="historialExploracion" type="text" class="form-control" placeholder="Exploracion" />
+                    </div>
+                    <div class="col-md-3">
+                        <input id="historialDiagnostico" type="text" class="form-control" placeholder="Diagnostico" />
+                    </div>
+                    <div class="col-12">
+                        <input id="historialNotas" type="text" class="form-control" placeholder="Notas clinicas (tratamiento, resultados, etc.)" />
+                    </div>
+                </div>
+                <div id="historialList" class="history-timeline"></div>
+            </div>
+
+            <div class="dashboard-section-title">Tratamientos y entregas</div>
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="dash-card">
+                        <h6 class="mb-3">Recetas asignadas</h6>
+                        <div id="recetasPaciente" class="d-flex flex-column gap-2"></div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="dash-card">
+                        <h6 class="mb-3">Inventario personal</h6>
+                        <div id="inventarioPaciente" class="d-flex flex-column gap-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="../assets/js/main.js"></script>
+</body>
+</html>

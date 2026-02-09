@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VitaClick | Dashboard Medico</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="skin-base" data-page="dashboard">
+    <a class="skip-link" href="#mainContent">Saltar al contenido</a>
+
+    <nav class="navbar navbar-expand-lg navbar-light nav-main sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <span class="me-2"><i class="bi bi-heart-pulse-fill logo-icon"></i></span>VitaClick
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain" aria-controls="navMain" aria-expanded="false" aria-label="Abrir menú">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navMain">
+                <ul class="navbar-nav mx-auto gap-lg-3 align-items-lg-center">
+                    <li class="nav-item"><a class="nav-link" data-nav="inicio" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a id="navDashboard" class="nav-link" data-nav="dashboard" href="dashboard-medico.html">Mi Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="salud" href="salud.html">Salud Personal</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="seguimiento" href="seguimiento.html">Seguimiento</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="analisis" href="analisis.html">Analisis</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="sobre" href="sobre.html">Sobre Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="mapa" href="mapa.html">Mapa Web</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-2">
+                    <a class="btn btn-outline-primary btn-sm position-relative" href="alertas.html" aria-label="Centro de alertas">
+                        <i class="bi bi-bell"></i>
+                        <span id="alertBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">0</span>
+                    </a>
+                    <select id="skinSelector" class="form-select form-select-sm skin-select" aria-label="Cambiar tema visual">
+                        <option value="base">Skin Base</option>
+                        <option value="good">Skin Mejorada</option>
+                        <option value="access">Skin Accesible</option>
+                    </select>
+                    <a class="btn btn-outline-secondary btn-sm" href="login.html">Acceder</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main id="mainContent" class="section-block">
+        <div class="container">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Panel Medico</h1>
+                    <p class="page-subtitle">Supervisa adherencia y ajusta tratamientos en tiempo real.</p>
+                </div>
+                <div class="d-flex flex-wrap align-items-center gap-2">
+                    <div>
+                        <input id="seguimientoPaciente" class="form-control form-control-sm" list="seguimientoPacientesList" placeholder="Escribe el paciente" aria-label="Paciente para seguimiento">
+                        <datalist id="seguimientoPacientesList"></datalist>
+                    </div>
+                    <button id="nuevoSeguimiento" type="button" class="btn btn-primary">Nuevo seguimiento</button>
+                </div>
+            </div>
+
+            <div class="row g-4 align-items-stretch">
+                <div class="col-lg-4">
+                    <div class="dash-card h-100">
+                        <h6 class="mb-3">Pacientes en riesgo</h6>
+                        <ul id="riesgoList" class="list-unstyled mb-0">
+                            <li class="text-muted">Sin datos por ahora.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="dash-card h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="mb-0">Tratamientos activos</h6>
+                            <select class="form-select form-select-sm w-auto">
+                                <option>Ultima semana</option>
+                                <option>Ultimo mes</option>
+                            </select>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Paciente</th>
+                                        <th>Tratamiento</th>
+                                        <th>Estado</th>
+                                        <th>Accion</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tratamientosActivosList">
+                                    <tr>
+                                        <td colspan="4" class="text-muted">Sin tratamientos activos.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mt-1">
+                <div class="col-12">
+                    <div class="dash-card">
+                        <h6 class="mb-3">Detalle de tratamiento</h6>
+                        <div id="tratamientoDetalle" class="text-muted">Selecciona un paciente en tratamientos activos para revisar su informacion.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mt-1">
+                <div class="col-12">
+                    <div class="dash-card">
+                        <h6 class="mb-3">Alertas de pacientes</h6>
+                        <div id="alertasMedicoList" class="d-flex flex-column gap-2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mt-1 align-items-stretch">
+                <div class="col-lg-6">
+                    <div class="dash-card">
+                        <h6 class="mb-3">Prescribir tratamiento</h6>
+                        <form id="prescripcionForm" class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label">Paciente</label>
+                                <input id="prescPaciente" type="text" class="form-control" placeholder="Nombre del paciente">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Medicamento</label>
+                                <input id="prescMed" type="text" class="form-control" placeholder="Nombre">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Dosis</label>
+                                <input id="prescDosis" type="text" class="form-control" placeholder="500mg">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Duracion</label>
+                                <input id="prescDias" type="number" class="form-control" placeholder="7">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Tomas/dia</label>
+                                <input id="prescTomas" type="number" class="form-control" placeholder="3">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Hora sugerida</label>
+                                <input id="prescHora" type="time" class="form-control" value="08:00">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Notas</label>
+                                <textarea id="prescNotas" class="form-control" rows="2" placeholder="Indicaciones"></textarea>
+                            </div>
+                            <div class="col-12 d-flex gap-2">
+                                <button type="submit" class="btn btn-primary">Guardar prescripcion</button>
+                                <button type="button" id="prescReset" class="btn btn-outline-secondary">Limpiar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="dash-card">
+                        <h6 class="mb-3">Prescripciones recientes</h6>
+                        <div class="table-responsive">
+                            <table class="table align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Paciente</th>
+                                        <th>Medicamento</th>
+                                        <th>Estado</th>
+                                        <th>Accion</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="prescripcionesList"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mt-1">
+                <div class="col-lg-6">
+                    <div class="dash-card">
+                        <h6 class="mb-3">Historial de cumplimiento</h6>
+                        <div class="table-responsive">
+                            <table class="table align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Paciente</th>
+                                        <th>Semana</th>
+                                        <th>Adherencia</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cumplimientoList">
+                                    <tr>
+                                        <td colspan="3" class="text-muted">Sin datos de cumplimiento.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="dash-card">
+                        <h6 class="mb-3">Mensajeria con pacientes</h6>
+                        <form id="mensajeForm" class="row g-2">
+                            <div class="col-12">
+                                <input id="mensajePaciente" type="text" class="form-control" placeholder="Paciente">
+                            </div>
+                            <div class="col-12">
+                                <textarea id="mensajeTexto" class="form-control" rows="3" placeholder="Escribe el mensaje"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-outline-primary w-100">Enviar mensaje</button>
+                            </div>
+                        </form>
+                        <div class="mt-3" id="mensajesList"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mt-1">
+                <div class="col-12">
+                    <div class="dash-card">
+                        <h6 class="mb-3">Historial del paciente</h6>
+                        <div class="row g-2 align-items-end">
+                            <div class="col-md-6">
+                                <label class="form-label">Nombre del paciente</label>
+                                <input id="histPacienteNombre" type="text" class="form-control" placeholder="Ej: Juan Perez">
+                            </div>
+                            <div class="col-md-3">
+                                <button id="buscarHistorial" class="btn btn-outline-primary w-100">Buscar</button>
+                            </div>
+                        </div>
+                        <div class="mt-3" id="historialPaciente"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="../assets/js/main.js"></script>
+</body>
+</html>
