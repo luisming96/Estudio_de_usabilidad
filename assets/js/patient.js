@@ -107,6 +107,136 @@ export function initPatientUI() {
     render();
 }
 
+export function updateHomeHero() {
+    if (document.body.dataset.page !== 'inicio') return;
+    if (localStorage.getItem('vitaAuth') !== 'true') return;
+    if (state.rolActual !== 'paciente') return;
+
+    const nextLabel = document.getElementById('homeNextLabel');
+    const nextName = document.getElementById('homeNextName');
+    const nextMeta = document.getElementById('homeNextMeta');
+    const weekLabel = document.getElementById('homeWeekLabel');
+    const weekPct = document.getElementById('homeWeekPct');
+    const panelLabel = document.getElementById('homePanelLabel');
+    const panelValue = document.getElementById('homePanelValue');
+    const bars = [
+        document.getElementById('homeWeekBar1'),
+        document.getElementById('homeWeekBar2'),
+        document.getElementById('homeWeekBar3'),
+        document.getElementById('homeWeekBar4'),
+        document.getElementById('homeWeekBar5')
+    ];
+
+    if (!nextLabel || !nextName || !nextMeta || !weekLabel || !weekPct || !panelLabel || !panelValue) return;
+
+    const { total, hechos, porcentaje } = calcularAdherenciaBase();
+    const tieneMeds = total > 0;
+
+    const proxima = obtenerProximaToma();
+    if (proxima) {
+        nextLabel.innerText = 'Proxima toma';
+        nextName.innerText = proxima.nombre;
+        nextMeta.innerText = `${proxima.hora} · En ${proxima.horas}h ${proxima.minutos}m`;
+    } else if (tieneMeds) {
+        nextLabel.innerText = 'Todo al dia';
+        nextName.innerText = 'Sin tomas pendientes';
+        nextMeta.innerText = 'Buen trabajo, vuelve mas tarde.';
+    } else {
+        nextLabel.innerText = 'Configura tu primera rutina';
+        nextName.innerText = 'Activa recordatorios';
+        nextMeta.innerText = 'Conecta tu tratamiento y empieza a medir tu avance.';
+    }
+
+    if (tieneMeds) {
+        weekLabel.innerText = 'Adherencia semanal';
+        weekPct.innerText = `${porcentaje}%`;
+    } else {
+        weekLabel.innerText = 'Seguimiento listo para usar';
+        weekPct.innerText = '--';
+    }
+
+    const serie = getAdherenciaSerie().slice(-5);
+    const valores = serie.length ? serie.map((d) => d.porcentaje) : (tieneMeds ? [porcentaje, porcentaje, porcentaje, porcentaje, porcentaje] : null);
+    if (valores) {
+        valores.forEach((val, idx) => {
+            const bar = bars[idx];
+            if (bar) bar.style.height = `${val}%`;
+        });
+    }
+
+    if (tieneMeds) {
+        panelLabel.innerText = 'Panel activo';
+        panelValue.innerText = `${state.meds.length} medicamentos`;
+    } else {
+        panelLabel.innerText = 'Estado del panel';
+        panelValue.innerText = 'Sin datos aun';
+    }
+}
+
+function calcularAdherenciaBase() {
+    let total = 0;
+    let hechos = 0;
+    const hoyMs = new Date().setHours(0, 0, 0, 0);
+
+    state.meds.forEach((m) => {
+        const vigente = m.manual || (m.duracionDias - Math.floor((hoyMs - m.fechaInicio) / 86400000) > 0);
+        if (!vigente) return;
+
+        if (m.manual) {
+            total++;
+            if (m.mHecho || m.tHecho || m.nHecho) hechos++;
+        } else {
+            total += m.tomasAlDia;
+            if (m.mHecho) hechos++;
+            if (m.tomasAlDia === 3 && m.tHecho) hechos++;
+            if (m.tomasAlDia >= 2 && m.nHecho) hechos++;
+        }
+    });
+
+    const porcentaje = total ? Math.round((hechos / total) * 100) : 0;
+    return { total, hechos, porcentaje };
+}
+
+function obtenerProximaToma() {
+    const ahora = new Date();
+    const horaActual = ahora.getHours() * 60 + ahora.getMinutes();
+    const hoyMs = new Date().setHours(0, 0, 0, 0);
+
+    let proxima = null;
+    let menorDif = Infinity;
+
+    state.meds.forEach((m) => {
+        const vigente = m.manual || (m.duracionDias - Math.floor((hoyMs - m.fechaInicio) / 86400000) > 0);
+        if (!vigente) return;
+
+        const turnos = [];
+        if (m.manual) {
+            turnos.push({ turno: m.turnoAuto, hora: m.hora, hecho: m.mHecho || m.tHecho || m.nHecho });
+        } else {
+            turnos.push({ turno: 'mañana', hora: m.hora, hecho: m.mHecho });
+            if (m.tomasAlDia === 3) turnos.push({ turno: 'tarde', hora: calcularHoraTurno(m.hora, 'tarde', false, m.tomasAlDia), hecho: m.tHecho });
+            if (m.tomasAlDia >= 2) turnos.push({ turno: 'noche', hora: calcularHoraTurno(m.hora, 'noche', false, m.tomasAlDia), hecho: m.nHecho });
+        }
+
+        turnos.forEach((t) => {
+            if (t.hecho) return;
+            const [h, min] = t.hora.split(':').map(Number);
+            const minToma = h * 60 + min;
+            const dif = minToma - horaActual;
+
+            if (dif > 0 && dif < menorDif) {
+                menorDif = dif;
+                proxima = { nombre: m.nombre, hora: t.hora, minutosTotal: dif };
+            }
+        });
+    });
+
+    if (!proxima) return null;
+    const horas = Math.floor(proxima.minutosTotal / 60);
+    const minutos = proxima.minutosTotal % 60;
+    return { nombre: proxima.nombre, hora: proxima.hora, horas, minutos };
+}
+
 function initAlertaMedico() {
     const form = document.getElementById('alertaMedicoForm');
     if (!form) return;
@@ -244,7 +374,7 @@ function trimText(text, max = 240) {
     return `${clean.slice(0, max)}...`;
 }
 
-export function calcularHoraTurno(horaBase, turno, esManual) {
+export function calcularHoraTurno(horaBase, turno, esManual, tomasAlDia = 3) {
     if (!horaBase || typeof horaBase !== 'string' || !horaBase.includes(':')) return '08:00';
     if (esManual) return horaBase;
 
@@ -252,8 +382,12 @@ export function calcularHoraTurno(horaBase, turno, esManual) {
     let h = parseInt(parts[0], 10);
     const m = parts[1];
 
-    if (turno === 'tarde') h = (h + 8) % 24;
-    if (turno === 'noche') h = (h + 14) % 24;
+    if (turno === 'tarde') {
+        h = (h + (tomasAlDia === 3 ? 6 : 8)) % 24;
+    }
+    if (turno === 'noche') {
+        h = (h + (tomasAlDia === 2 ? 12 : 14)) % 24;
+    }
     return `${String(h).padStart(2, '0')}:${m}`;
 }
 
@@ -334,7 +468,7 @@ export function render() {
 
         if (!visible) return '';
 
-        const horaDisplay = calcularHoraTurno(m.hora, state.filtroActual, m.manual);
+        const horaDisplay = calcularHoraTurno(m.hora, state.filtroActual, m.manual, m.tomasAlDia);
         const etiqueta = m.manual
             ? '<span class="badge bg-light text-dark border">💊 Automedicacion</span>'
             : `<small class="text-muted">Quedan ${diasRestantes} dias</small>`;
@@ -342,15 +476,10 @@ export function render() {
 
         const [h, min] = horaDisplay.split(':').map(Number);
         const minToma = h * 60 + min;
-        const turnoActualEmpezado =
-            (state.filtroActual === 'mañana' && horaActual >= 6 * 60) ||
-            (state.filtroActual === 'tarde' && horaActual >= 13 * 60) ||
-            (state.filtroActual === 'noche' && horaActual >= 20 * 60);
-
         let claseEstado = '';
         if (hecho) {
             claseEstado = 'task-done';
-        } else if (turnoActualEmpezado) {
+        } else {
             const difMinutos = horaActual - minToma;
             if (difMinutos > 0) {
                 claseEstado = 'task-retrasada';
@@ -458,6 +587,118 @@ export function updateStats() {
         serie.push(entry);
     }
     setAdherenciaSerie(serie.slice(-30));
+
+    updateSeguimientoUI(p);
+}
+
+function updateSeguimientoUI(porcentajeActual) {
+    const objetivoTomasLabel = document.getElementById('objetivoTomasLabel');
+    const objetivoTomasBar = document.getElementById('objetivoTomasBar');
+    const objetivoRegistroLabel = document.getElementById('objetivoRegistroLabel');
+    const objetivoRegistroBar = document.getElementById('objetivoRegistroBar');
+    const objetivoConstanciaLabel = document.getElementById('objetivoConstanciaLabel');
+    const objetivoConstanciaBar = document.getElementById('objetivoConstanciaBar');
+
+    const ritmoMananaPct = document.getElementById('ritmoMananaPct');
+    const ritmoMananaBar = document.getElementById('ritmoMananaBar');
+    const ritmoTardePct = document.getElementById('ritmoTardePct');
+    const ritmoTardeBar = document.getElementById('ritmoTardeBar');
+    const ritmoNochePct = document.getElementById('ritmoNochePct');
+    const ritmoNocheBar = document.getElementById('ritmoNocheBar');
+    const notasEl = document.getElementById('seguimientoNotas');
+
+    const hasObjetivos = objetivoTomasLabel || objetivoRegistroLabel || objetivoConstanciaLabel;
+    const hasRitmo = ritmoMananaPct || ritmoTardePct || ritmoNochePct;
+    if (!hasObjetivos && !hasRitmo && !notasEl) return;
+
+    const serie = getAdherenciaSerie().slice(-7);
+    const diasConMeta = serie.filter((d) => d.porcentaje >= 80).length;
+    const diasRegistrados = serie.length;
+    const metaPct = Math.round((diasConMeta / 7) * 100);
+    const registroPct = Math.round((diasRegistrados / 7) * 100);
+    const racha = state.rachaActual || 0;
+    const rachaPct = Math.min(Math.round((racha / 7) * 100), 100);
+
+    if (objetivoTomasLabel) objetivoTomasLabel.innerText = `${diasConMeta}/7`;
+    if (objetivoTomasBar) objetivoTomasBar.style.width = `${metaPct}%`;
+    if (objetivoRegistroLabel) objetivoRegistroLabel.innerText = `${diasRegistrados}/7`;
+    if (objetivoRegistroBar) objetivoRegistroBar.style.width = `${registroPct}%`;
+    if (objetivoConstanciaLabel) objetivoConstanciaLabel.innerText = `${racha} dias seguidos`;
+    if (objetivoConstanciaBar) objetivoConstanciaBar.style.width = `${rachaPct}%`;
+
+    const ritmo = calcularRitmoTurnos();
+    if (ritmoMananaPct) ritmoMananaPct.innerText = `${ritmo.mañana}%`;
+    if (ritmoMananaBar) ritmoMananaBar.style.width = `${ritmo.mañana}%`;
+    if (ritmoTardePct) ritmoTardePct.innerText = `${ritmo.tarde}%`;
+    if (ritmoTardeBar) ritmoTardeBar.style.width = `${ritmo.tarde}%`;
+    if (ritmoNochePct) ritmoNochePct.innerText = `${ritmo.noche}%`;
+    if (ritmoNocheBar) ritmoNocheBar.style.width = `${ritmo.noche}%`;
+
+    if (notasEl) {
+        const notas = [];
+        if (porcentajeActual >= 85) {
+            notas.push('Buen ritmo general de adherencia esta semana.');
+        } else if (porcentajeActual >= 60) {
+            notas.push('Vas bien, pero aun puedes subir la adherencia.');
+        } else {
+            notas.push('Semana irregular. Activa recordatorios extra.');
+        }
+
+        const pico = Object.entries(ritmo).sort((a, b) => b[1] - a[1])[0];
+        const valle = Object.entries(ritmo).sort((a, b) => a[1] - b[1])[0];
+        if (pico && valle && pico[0] !== valle[0]) {
+            notas.push(`Tu mejor franja es la ${pico[0]} y la mas baja es la ${valle[0]}.`);
+        }
+
+        if (racha >= 3) {
+            notas.push(`Mantienes ${racha} dias seguidos, sigue asi.`);
+        } else {
+            notas.push('Objetivo proximo: 3 dias seguidos sin fallos.');
+        }
+
+        notasEl.innerHTML = notas.map((n, i) => `<li${i < notas.length - 1 ? ' class="mb-2"' : ''}>${n}</li>`).join('');
+    }
+}
+
+function calcularRitmoTurnos() {
+    const turnos = {
+        mañana: { total: 0, hechos: 0 },
+        tarde: { total: 0, hechos: 0 },
+        noche: { total: 0, hechos: 0 }
+    };
+
+    const hoyMs = new Date().setHours(0, 0, 0, 0);
+    state.meds.forEach((m) => {
+        const vigente = m.manual || (m.duracionDias - Math.floor((hoyMs - m.fechaInicio) / 86400000) > 0);
+        if (!vigente) return;
+
+        if (m.manual) {
+            const turno = normalizeTurno(m.turnoAuto);
+            if (!turnos[turno]) return;
+            turnos[turno].total += 1;
+            const hecho = turno === 'mañana' ? m.mHecho : turno === 'tarde' ? m.tHecho : m.nHecho;
+            if (hecho) turnos[turno].hechos += 1;
+        } else {
+            turnos.mañana.total += 1;
+            if (m.mHecho) turnos.mañana.hechos += 1;
+
+            if (m.tomasAlDia === 3) {
+                turnos.tarde.total += 1;
+                if (m.tHecho) turnos.tarde.hechos += 1;
+            }
+            if (m.tomasAlDia >= 2) {
+                turnos.noche.total += 1;
+                if (m.nHecho) turnos.noche.hechos += 1;
+            }
+        }
+    });
+
+    const pct = (data) => (data.total ? Math.round((data.hechos / data.total) * 100) : 0);
+    return {
+        mañana: pct(turnos.mañana),
+        tarde: pct(turnos.tarde),
+        noche: pct(turnos.noche)
+    };
 }
 
 export function toggleMed(i) {
@@ -536,8 +777,8 @@ export function actualizarProximaToma() {
             turnos.push({ turno: m.turnoAuto, hora: m.hora, hecho: m.mHecho || m.tHecho || m.nHecho });
         } else {
             turnos.push({ turno: 'mañana', hora: m.hora, hecho: m.mHecho });
-            if (m.tomasAlDia === 3) turnos.push({ turno: 'tarde', hora: calcularHoraTurno(m.hora, 'tarde', false), hecho: m.tHecho });
-            if (m.tomasAlDia >= 2) turnos.push({ turno: 'noche', hora: calcularHoraTurno(m.hora, 'noche', false), hecho: m.nHecho });
+            if (m.tomasAlDia === 3) turnos.push({ turno: 'tarde', hora: calcularHoraTurno(m.hora, 'tarde', false, m.tomasAlDia), hecho: m.tHecho });
+            if (m.tomasAlDia >= 2) turnos.push({ turno: 'noche', hora: calcularHoraTurno(m.hora, 'noche', false, m.tomasAlDia), hecho: m.nHecho });
         }
 
         turnos.forEach(t => {
@@ -883,7 +1124,7 @@ export function renderInventarioPaciente() {
         btn.addEventListener('click', () => {
             const med = btn.dataset.recogida;
             state.inventarioPacientes = state.inventarioPacientes.map(i =>
-                i.paciente.toLowerCase() === usuario.toLowerCase() && i.med === med
+                normalizeText(i.paciente) === normalizeText(usuario) && normalizeText(i.med) === normalizeText(med)
                     ? { ...i, estado: 'Recogida' }
                     : i
             );
@@ -891,4 +1132,9 @@ export function renderInventarioPaciente() {
             renderInventarioPaciente();
         });
     });
+}
+
+function normalizeText(value) {
+    if (!value) return '';
+    return value.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '').trim();
 }

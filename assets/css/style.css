@@ -183,6 +183,207 @@ body.skin-access .section-alt { background: #0b0b0b; }
     background: rgba(255, 255, 255, 0.7);
 }
 
+.hero-splash {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.badge-pill {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: #ffffff;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.hero-list {
+    display: grid;
+    gap: 0.6rem;
+    font-size: 0.95rem;
+}
+
+.hero-list i {
+    margin-right: 0.5rem;
+    color: var(--accent);
+}
+
+.section-hero .hero-list i {
+    color: #ffffff;
+}
+
+.hero-frame {
+    position: relative;
+    display: grid;
+    gap: 1rem;
+}
+
+.hero-card {
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 1.1rem;
+    padding: 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 16px 34px rgba(15, 23, 42, 0.2);
+    color: var(--text);
+}
+
+.hero-card-main {
+    transform: translateY(8px);
+}
+
+.hero-card-light {
+    background: rgba(255, 255, 255, 0.75);
+}
+
+.hero-card-outline {
+    background: transparent;
+    border: 1px dashed rgba(255, 255, 255, 0.6);
+    color: #ffffff;
+}
+
+.hero-card .bar {
+    width: 14px;
+    background: var(--accent);
+    border-radius: 999px;
+}
+
+.btn-glow {
+    box-shadow: 0 12px 30px rgba(255, 255, 255, 0.35);
+}
+
+.hover-rise {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.hover-rise:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 22px 40px rgba(15, 23, 42, 0.12);
+}
+
+.icon-chip {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 1.2rem;
+}
+
+body.skin-access .badge-pill {
+    color: var(--text);
+    border-color: var(--border);
+    background: transparent;
+}
+
+body.skin-access .hero-card,
+body.skin-access .hero-card-light {
+    background: var(--card-bg);
+    color: var(--text);
+}
+
+.carousel-shell {
+    background: var(--card-bg);
+    border-radius: 1.5rem;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 1.5rem 2.5rem 2.8rem;
+}
+
+.carousel-shell .carousel-item {
+    padding: 0.5rem 0;
+}
+
+.carousel-shell .carousel-control-prev,
+.carousel-shell .carousel-control-next {
+    width: 3rem;
+    height: 3rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--accent-soft);
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    opacity: 1;
+}
+
+.carousel-shell .carousel-control-prev-icon,
+.carousel-shell .carousel-control-next-icon {
+    filter: none;
+}
+
+.carousel-shell .carousel-indicators {
+    bottom: -1.2rem;
+}
+
+.carousel-shell .carousel-indicators [data-bs-target] {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+}
+
+.carousel-shell .carousel-indicators .active {
+    background: var(--accent);
+}
+
+.carousel-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+}
+
+.feature-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.carousel-card {
+    background: #ffffff;
+    border-radius: 1.2rem;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+.carousel-card .bar {
+    width: 14px;
+    border-radius: 999px;
+    background: var(--accent);
+}
+
+@media (max-width: 992px) {
+    .carousel-shell {
+        padding: 1.5rem;
+    }
+    .carousel-shell .carousel-control-prev,
+    .carousel-shell .carousel-control-next {
+        display: none;
+    }
+}
+
 .page-header {
     display: flex;
     align-items: center;
@@ -360,9 +561,16 @@ body.role-farmaceutico [data-role]:not([data-role="farmaceutico"], [data-role="a
 
 body.role-medico a[href$="salud.html"],
 body.role-medico a[href$="seguimiento.html"],
+body.role-medico a[href$="herramientas.html"],
 body.role-farmaceutico a[href$="salud.html"],
 body.role-farmaceutico a[href$="seguimiento.html"],
+body.role-farmaceutico a[href$="herramientas.html"],
 body.role-farmaceutico a[href$="alertas.html"] {
+    display: none !important;
+}
+
+body.role-paciente a[href$="medico-comunicacion.html"],
+body.role-farmaceutico a[href$="medico-comunicacion.html"] {
     display: none !important;
 }
 

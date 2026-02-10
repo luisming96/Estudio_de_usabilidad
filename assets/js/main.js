@@ -1,5 +1,5 @@
 import { state, initSkinSelector, initNavActive, initAuth, initActions, initFarmacias, setRol, enforceRoleAccess, loadMedsForUser } from './core.js';
-import { initPatientUI, toggleMed, delMed } from './patient.js';
+import { initPatientUI, toggleMed, delMed, updateHomeHero } from './patient.js';
 import { initMedico } from './doctor.js';
 import { initFarmaceutico } from './pharmacy.js';
 import { initAnalisis } from './analysis.js';
@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadMedsForUser();
 
     initPatientUI();
+    updateHomeHero();
     initMedico();
     initFarmaceutico();
     initAnalisis();
@@ -32,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!event || !event.key) return;
         if (event.key.startsWith('vita')) {
             initPatientUI();
+            updateHomeHero();
             initAnalisis();
             initAlertas();
             initMedico();

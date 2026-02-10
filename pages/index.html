@@ -27,6 +27,7 @@
                     <li class="nav-item"><a class="nav-link" data-nav="inicio" href="index.html">Inicio</a></li>
                     <li class="nav-item"><a id="navDashboard" class="nav-link" data-nav="dashboard" href="dashboard.html">Mi Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" data-nav="salud" href="salud.html">Salud Personal</a></li>
+                    <li class="nav-item" data-role="paciente"><a class="nav-link" data-nav="herramientas" href="herramientas.html">Herramientas</a></li>
                     <li class="nav-item"><a class="nav-link" data-nav="seguimiento" href="seguimiento.html">Seguimiento</a></li>
                     <li class="nav-item"><a class="nav-link" data-nav="analisis" href="analisis.html">Analisis</a></li>
                     <li class="nav-item"><a class="nav-link" data-nav="sobre" href="sobre.html">Sobre Nosotros</a></li>
@@ -49,35 +50,48 @@
     </nav>
 
     <main id="mainContent">
-        <section class="section-hero">
+        <section class="section-hero hero-splash">
             <div class="container">
                 <div class="row align-items-center g-4">
                     <div class="col-lg-7">
-                        <h1 class="display-title">Tu salud, un click de distancia</h1>
-                        <p class="lead">VitaClick mejora la gestion diaria de la medicacion y facilita la comunicacion con profesionales sanitarios.</p>
-                        <div class="d-flex gap-3 flex-wrap">
-                            <a class="btn btn-light btn-lg" href="dashboard.html">Ir a Mi Dashboard</a>
-                            <a class="btn btn-outline-light btn-lg" href="salud.html">Salud Personal</a>
-                            <a class="btn btn-outline-light btn-lg" href="analisis.html">Ver Analisis</a>
+                        <div class="hero-badges">
+                            <span class="badge-pill">Adherencia inteligente</span>
+                            <span class="badge-pill">Alertas clinicas</span>
+                            <span class="badge-pill">Soporte por roles</span>
+                        </div>
+                        <h1 class="display-title">Salud que se mueve contigo</h1>
+                        <p class="lead">VitaClick convierte la medicacion diaria en una experiencia clara, humana y conectada con tu equipo sanitario.</p>
+                        <div class="d-flex gap-3 flex-wrap mb-4">
+                            <a class="btn btn-light btn-lg btn-glow" href="dashboard.html">Explorar mi dashboard</a>
+                            <a class="btn btn-outline-light btn-lg" href="salud.html">Ver salud personal</a>
+                        </div>
+                        <div class="hero-list">
+                            <div><i class="bi bi-check2-circle"></i><span>Rutinas guiadas y recordatorios precisos.</span></div>
+                            <div><i class="bi bi-check2-circle"></i><span>Seguimiento clinico en tiempo real.</span></div>
+                            <div><i class="bi bi-check2-circle"></i><span>Canales directos con medico y farmacia.</span></div>
                         </div>
                     </div>
                     <div class="col-lg-5">
-                        <div class="card-soft hero-metrics">
-                            <div class="metric-tile">
-                                <div class="small">Medicamentos</div>
-                                <h4 class="mb-0">8</h4>
+                        <div class="hero-frame">
+                            <div class="hero-card hero-card-main">
+                                <div id="homeNextLabel" class="small text-muted">Configura tu primera rutina</div>
+                                <h4 id="homeNextName" class="mb-1">Activa recordatorios</h4>
+                                <div id="homeNextMeta" class="small text-muted">Conecta tu tratamiento y empieza a medir tu avance.</div>
                             </div>
-                            <div class="metric-tile">
-                                <div class="small">Tomas hoy</div>
-                                <h4 class="mb-0">5/6</h4>
+                            <div class="hero-card hero-card-light">
+                                <div id="homeWeekLabel" class="small text-muted">Seguimiento listo para usar</div>
+                                <h4 id="homeWeekPct" class="mt-2 mb-0">--</h4>
+                                <div class="d-flex align-items-end gap-2 mt-3">
+                                    <div id="homeWeekBar1" class="bar" style="height: 24%"></div>
+                                    <div id="homeWeekBar2" class="bar" style="height: 38%"></div>
+                                    <div id="homeWeekBar3" class="bar" style="height: 46%"></div>
+                                    <div id="homeWeekBar4" class="bar" style="height: 30%"></div>
+                                    <div id="homeWeekBar5" class="bar" style="height: 52%"></div>
+                                </div>
                             </div>
-                            <div class="metric-tile">
-                                <div class="small">Proxima toma</div>
-                                <h4 class="mb-0">14:00</h4>
-                            </div>
-                            <div class="metric-tile">
-                                <div class="small">Racha</div>
-                                <h4 class="mb-0">12 dias</h4>
+                            <div class="hero-card hero-card-outline">
+                                <div id="homePanelLabel" class="small text-muted">Estado del panel</div>
+                                <h4 id="homePanelValue" class="mb-0">Sin datos aun</h4>
                             </div>
                         </div>
                     </div>
@@ -88,57 +102,152 @@
         <section class="section-block">
             <div class="container">
                 <div class="section-header text-center">
-                    <h2 class="section-title">Funcionalidades Principales</h2>
-                    <p class="section-subtitle mx-auto">Diseñadas para resolver problemas reales del dia a dia en la gestion de tu medicacion.</p>
+                    <h2 class="section-title">Lo que resuelve de verdad</h2>
+                    <p class="section-subtitle mx-auto">Cubrimos el momento exacto, la informacion clara y el seguimiento que evita olvidos.</p>
                 </div>
-                <div class="row g-4">
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card-soft">
-                            <i class="bi bi-bell fs-3 text-success"></i>
-                            <h6 class="mt-3">Recordatorios Inteligentes</h6>
-                            <p class="small text-muted">Nunca olvides una toma con alertas personalizadas.</p>
+                <div id="featureCarousel" class="carousel slide carousel-fade carousel-shell" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#featureCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#featureCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#featureCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="row g-4 align-items-center">
+                                <div class="col-lg-6">
+                                    <div class="carousel-badge">Rutina diaria</div>
+                                    <h3 class="mb-3">Recordatorios que se ajustan a tu vida</h3>
+                                    <p class="text-muted">Alertas inteligentes, horarios claros y registros simples para no perder ni una toma.</p>
+                                    <div class="d-flex gap-3 flex-wrap">
+                                        <span class="feature-chip"><i class="bi bi-bell"></i> Alertas personalizadas</span>
+                                        <span class="feature-chip"><i class="bi bi-check-circle"></i> Confirmacion rapida</span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="carousel-card">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div class="fw-bold">Proxima toma</div>
+                                            <span class="badge bg-success">En 25 min</span>
+                                        </div>
+                                        <h4 class="mb-1">Amoxicilina</h4>
+                                        <div class="small text-muted">22:00 · 1 capsula</div>
+                                        <div class="progress mt-3" style="height: 6px;">
+                                            <div class="progress-bar" style="width: 70%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="row g-4 align-items-center">
+                                <div class="col-lg-6">
+                                    <div class="carousel-badge">Seguimiento clinico</div>
+                                    <h3 class="mb-3">Tu medico ve el avance en tiempo real</h3>
+                                    <p class="text-muted">Comparte adherencia, tendencias y notas clinicas sin depender de llamadas o mensajes sueltos.</p>
+                                    <div class="d-flex gap-3 flex-wrap">
+                                        <span class="feature-chip"><i class="bi bi-clipboard-pulse"></i> Reportes diarios</span>
+                                        <span class="feature-chip"><i class="bi bi-activity"></i> Tendencias claras</span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="carousel-card">
+                                        <div class="small text-muted">Adherencia semanal</div>
+                                        <h4 class="mt-2">82%</h4>
+                                        <div class="d-flex align-items-end gap-2 mt-3">
+                                            <div class="bar" style="height: 42%"></div>
+                                            <div class="bar" style="height: 70%"></div>
+                                            <div class="bar" style="height: 86%"></div>
+                                            <div class="bar" style="height: 68%"></div>
+                                            <div class="bar" style="height: 92%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="row g-4 align-items-center">
+                                <div class="col-lg-6">
+                                    <div class="carousel-badge">Seguridad</div>
+                                    <h3 class="mb-3">Interacciones seguras y apoyo inmediato</h3>
+                                    <p class="text-muted">Consulta informacion oficial y conecta con farmacia ante cualquier duda.</p>
+                                    <div class="d-flex gap-3 flex-wrap">
+                                        <span class="feature-chip"><i class="bi bi-shield-check"></i> Info verificada</span>
+                                        <span class="feature-chip"><i class="bi bi-chat-heart"></i> Soporte directo</span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="carousel-card">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="fw-bold">Consulta oficial</div>
+                                            <span class="badge bg-primary">Actualizado</span>
+                                        </div>
+                                        <div class="small text-muted">Paracetamol · Analgesico</div>
+                                        <p class="small text-muted mt-2 mb-0">Usos, advertencias y compatibilidades en un clic.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card-soft">
-                            <i class="bi bi-check-circle fs-3 text-success"></i>
-                            <h6 class="mt-3">Registro de Tomas</h6>
-                            <p class="small text-muted">Confirma cada toma y resuelve dudas al instante.</p>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#featureCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#featureCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Siguiente</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-block section-alt">
+            <div class="container">
+                <div class="row g-4 align-items-center">
+                    <div class="col-lg-6">
+                        <div class="section-header">
+                            <h2 class="section-title">Servicios y herramientas clave</h2>
+                            <p class="section-subtitle">Encuentra en segundos lo que necesitas: farmacias cercanas, fichas oficiales y tu historial clinico.</p>
+                        </div>
+                        <div class="hero-list text-muted">
+                            <div><i class="bi bi-geo-alt"></i><span>Buscador de farmacias con mapas.</span></div>
+                            <div><i class="bi bi-capsule"></i><span>Ficha oficial de medicamentos y usos.</span></div>
+                            <div><i class="bi bi-journal-medical"></i><span>Historial clinico centralizado.</span></div>
+                        </div>
+                        <div class="d-flex gap-3 flex-wrap mt-4">
+                            <a class="btn btn-primary" href="herramientas.html">Abrir herramientas</a>
+                            <a class="btn btn-outline-secondary" href="seguimiento.html">Ver seguimiento</a>
                         </div>
                     </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card-soft">
-                            <i class="bi bi-stars fs-3 text-success"></i>
-                            <h6 class="mt-3">Gamificacion</h6>
-                            <p class="small text-muted">Gana insignias y mantente motivado en tratamientos largos.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card-soft">
-                            <i class="bi bi-clipboard-pulse fs-3 text-success"></i>
-                            <h6 class="mt-3">Seguimiento Medico</h6>
-                            <p class="small text-muted">Tu medico puede ver tu adherencia en tiempo real.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card-soft">
-                            <i class="bi bi-shield-check fs-3 text-success"></i>
-                            <h6 class="mt-3">Interacciones Seguras</h6>
-                            <p class="small text-muted">Revisa combinaciones sensibles con tu farmaceutico.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card-soft">
-                            <i class="bi bi-exclamation-triangle fs-3 text-success"></i>
-                            <h6 class="mt-3">Emergencias Rapidas</h6>
-                            <p class="small text-muted">Acceso directo a contacto de emergencia.</p>
+                    <div class="col-lg-6">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="card-soft hover-rise">
+                                    <div class="icon-chip"><i class="bi bi-geo-alt"></i></div>
+                                    <h6 class="mt-3">Mapa inteligente</h6>
+                                    <p class="small text-muted">Ubica farmacias y horarios sin salir de la app.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card-soft hover-rise">
+                                    <div class="icon-chip"><i class="bi bi-capsule"></i></div>
+                                    <h6 class="mt-3">Consulta oficial</h6>
+                                    <p class="small text-muted">Accede a informacion verificada de cada medicamento.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card-soft hover-rise">
+                                    <div class="icon-chip"><i class="bi bi-clipboard2-data"></i></div>
+                                    <h6 class="mt-3">Seguimiento claro</h6>
+                                    <p class="small text-muted">Tendencias y objetivos visibles en un solo panel.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="section-block section-alt">
+        <section class="section-block">
             <div class="container">
                 <div class="section-header text-center">
                     <h2 class="section-title">Para todos los usuarios</h2>
@@ -146,21 +255,21 @@
                 </div>
                 <div class="row g-4">
                     <div class="col-md-6 col-lg-4">
-                        <div class="card-soft text-center">
+                        <div class="card-soft text-center hover-rise">
                             <div class="mb-3"><i class="bi bi-person-circle fs-1 text-success"></i></div>
                             <h6>Pacientes</h6>
                             <p class="small text-muted">Gestiona medicacion diaria, recordatorios y logros.</p>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-4">
-                        <div class="card-soft text-center">
+                        <div class="card-soft text-center hover-rise">
                             <div class="mb-3"><i class="bi bi-activity fs-1 text-success"></i></div>
                             <h6>Medicos</h6>
                             <p class="small text-muted">Supervisa adherencia y ajusta tratamientos.</p>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-4">
-                        <div class="card-soft text-center">
+                        <div class="card-soft text-center hover-rise">
                             <div class="mb-3"><i class="bi bi-capsule fs-1 text-success"></i></div>
                             <h6>Farmaceuticos</h6>
                             <p class="small text-muted">Revisa interacciones y reposiciones.</p>
@@ -174,25 +283,19 @@
     <footer class="footer-main">
         <div class="container">
             <div class="row g-4">
-                <div class="col-lg-4">
+                <div class="col-lg-6">
                     <h5 class="mb-2">VitaClick</h5>
                     <p class="small">Mejorando la gestion diaria de la medicacion y la comunicacion entre pacientes y profesionales sanitarios.</p>
                 </div>
-                <div class="col-lg-4">
-                    <h6>Navegacion</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="index.html">Inicio</a></li>
-                        <li><a href="dashboard.html">Dashboard</a></li>
-                        <li><a href="salud.html">Salud Personal</a></li>
-                        <li><a href="analisis.html">Analisis</a></li>
-                        <li><a href="sobre.html">Sobre Nosotros</a></li>
-                        <li><a href="mapa.html">Mapa Web</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <h6>Contacto</h6>
                     <p class="small mb-1"><i class="bi bi-envelope me-2"></i>info@vitaclick.es</p>
                     <p class="small"><i class="bi bi-telephone me-2"></i>900 123 456</p>
+                </div>
+                <div class="col-lg-3">
+                    <h6>Confianza</h6>
+                    <p class="small mb-1">Seguimiento seguro y datos protegidos.</p>
+                    <p class="small mb-0">Disponible para pacientes, medicos y farmacias.</p>
                 </div>
             </div>
             <hr class="border-secondary" />

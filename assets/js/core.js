@@ -102,7 +102,7 @@ export function enforceRoleAccess() {
             return false;
         }
     }
-    if (page && ['salud', 'seguimiento'].includes(page)) {
+    if (page && ['salud', 'seguimiento', 'herramientas'].includes(page)) {
         if (!isAuth) {
             window.location.href = 'login.html';
             return false;
@@ -118,6 +118,16 @@ export function enforceRoleAccess() {
             return false;
         }
         if (!['paciente', 'medico'].includes(state.rolActual)) {
+            window.location.href = dashboardMap[state.rolActual] || 'dashboard.html';
+            return false;
+        }
+    }
+    if (page && page === 'medico-comunicacion') {
+        if (!isAuth) {
+            window.location.href = 'login.html';
+            return false;
+        }
+        if (state.rolActual !== 'medico') {
             window.location.href = dashboardMap[state.rolActual] || 'dashboard.html';
             return false;
         }

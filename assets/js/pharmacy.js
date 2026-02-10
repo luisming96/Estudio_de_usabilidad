@@ -18,7 +18,12 @@ export function initFarmaceutico() {
             const med = document.getElementById('stockMed').value.trim();
             const cant = parseInt(document.getElementById('stockCant').value, 10);
             if (!med || Number.isNaN(cant)) return alert('Completa medicamento y unidades');
-            state.stockFarmacia.unshift({ med, cant });
+            const idx = findStockIndex(med);
+            if (idx >= 0) {
+                state.stockFarmacia[idx].cant += cant;
+            } else {
+                state.stockFarmacia.unshift({ med, cant });
+            }
             localStorage.setItem('vitaStock', JSON.stringify(state.stockFarmacia.slice(0, 50)));
             stockForm.reset();
             renderStock();
@@ -34,9 +39,18 @@ export function initFarmaceutico() {
             const unidades = parseInt(document.getElementById('dispUnidades').value, 10) || 0;
             if (!paciente || !med || unidades <= 0) return alert('Completa paciente, medicamento y unidades');
 
-            const idx = state.inventarioPacientes.findIndex(i => i.paciente.toLowerCase() === paciente.toLowerCase() && i.med.toLowerCase() === med.toLowerCase());
+            const idx = state.inventarioPacientes.findIndex(i =>
+                normalizeText(i.paciente) === normalizeText(paciente) && normalizeText(i.med) === normalizeText(med)
+            );
             if (idx === -1) return alert('No existe inventario para ese paciente');
             if (state.inventarioPacientes[idx].unidades < unidades) return alert('Unidades insuficientes');
+
+            const stockIdx = findStockIndex(med);
+            if (stockIdx === -1) return alert('No hay stock disponible para ese medicamento');
+            if (state.stockFarmacia[stockIdx].cant < unidades) return alert('Stock insuficiente en farmacia');
+
+            state.stockFarmacia[stockIdx].cant -= unidades;
+            localStorage.setItem('vitaStock', JSON.stringify(state.stockFarmacia));
 
             state.inventarioPacientes[idx].unidades -= unidades;
             state.inventarioPacientes[idx].estado = state.inventarioPacientes[idx].unidades === 0 ? 'Dispensado' : 'Parcial';
@@ -47,6 +61,7 @@ export function initFarmaceutico() {
             dispForm.reset();
             renderDispensaciones();
             renderInventarioFarmacia();
+            renderStock();
         });
     }
     renderDispensaciones();
@@ -216,6 +231,14 @@ function normalizeMedName(value) {
         .normalize('NFD')
         .replace(/\p{Diacritic}/gu, '')
         .trim();
+}
+
+function normalizeText(value) {
+    return normalizeMedName(value);
+}
+
+function findStockIndex(med) {
+    return state.stockFarmacia.findIndex(s => normalizeMedName(s.med) === normalizeMedName(med));
 }
 
 function capitalize(value) {

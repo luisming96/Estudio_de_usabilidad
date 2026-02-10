@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VitaClick | Centro de Alertas</title>
+    <title>VitaClick | Herramientas</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
-<body class="skin-base" data-page="alertas">
+<body class="skin-base" data-page="herramientas">
     <a class="skip-link" href="#mainContent">Saltar al contenido</a>
 
     <nav class="navbar navbar-expand-lg navbar-light nav-main sticky-top">
@@ -19,7 +19,7 @@
             <a class="navbar-brand d-flex align-items-center" href="index.html">
                 <span class="me-2"><i class="bi bi-heart-pulse-fill logo-icon"></i></span>VitaClick
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain" aria-controls="navMain" aria-expanded="false" aria-label="Abrir menú">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain" aria-controls="navMain" aria-expanded="false" aria-label="Abrir menu">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navMain">
@@ -53,68 +53,67 @@
         <div class="container">
             <div class="page-header">
                 <div>
-                    <h1 class="page-title">Centro de Alertas</h1>
-                    <p class="page-subtitle">Gestiona tus notificaciones y alertas importantes.</p>
+                    <h1 class="page-title">Herramientas</h1>
+                    <p class="page-subtitle">Servicios utiles para tu tratamiento y consultas rapidas.</p>
                 </div>
             </div>
 
-            <div class="dash-card mb-4" data-role="paciente">
-                <h6 class="mb-2">Enviar mensaje al medico</h6>
-                <p class="small text-muted mb-3">Reporta sintomas o una urgencia para que tu medico lo vea de inmediato.</p>
-                <form id="alertaMedicoForm" class="row g-2">
-                    <div class="col-md-4">
-                        <select id="alertaTipo" class="form-select">
-                            <option value="mensaje">Mensaje</option>
-                            <option value="urgencia">Urgencia</option>
-                        </select>
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="dash-card">
+                        <h6 class="mb-3">Buscar farmacias</h6>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                            <input id="farmaciaQuery" type="text" class="form-control" placeholder="Buscar por barrio o ciudad">
+                        </div>
+                        <div id="farmaciasList" class="d-flex flex-column gap-2"></div>
                     </div>
-                    <div class="col-md-8">
-                        <input id="alertaTexto" type="text" class="form-control" placeholder="Escribe el mensaje o la urgencia" required>
+                </div>
+                <div class="col-lg-6">
+                    <div class="dash-card health-drug-card">
+                        <div class="health-card-header">
+                            <div>
+                                <h6 class="mb-1">Consulta medicamento</h6>
+                                <p class="small text-muted mb-0">Busca indicaciones y advertencias oficiales.</p>
+                            </div>
+                            <span class="health-badge"><i class="bi bi-capsule"></i></span>
+                        </div>
+                        <form id="drugForm" class="d-flex gap-2">
+                            <input id="drugQuery" type="text" class="form-control" placeholder="Ej: ibuprofeno" required>
+                            <button class="btn btn-primary" type="submit">Buscar</button>
+                        </form>
+                        <div id="drugResult" class="health-drug-result d-none">
+                            <div class="health-drug-title" id="drugName"></div>
+                            <div class="small text-muted" id="drugPurpose"></div>
+                            <div class="health-drug-block">
+                                <div class="health-drug-label">Indicaciones</div>
+                                <div id="drugIndications"></div>
+                            </div>
+                            <div class="health-drug-block">
+                                <div class="health-drug-label">Advertencias</div>
+                                <div id="drugWarnings"></div>
+                            </div>
+                            <div class="small text-muted">Fuente: openFDA</div>
+                        </div>
+                        <div id="drugEmpty" class="small text-muted mt-2">Los datos pueden variar segun el pais.</div>
                     </div>
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-primary w-100">Enviar</button>
+                    <div class="dash-card mt-4">
+                        <h6 class="mb-3">Info oficial</h6>
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2">
+                                <a href="https://www.aemps.gob.es/" target="_blank" rel="noopener">AEMPS - Medicamentos</a>
+                                <div class="small text-muted">Fichas oficiales y alertas.</div>
+                            </li>
+                            <li class="mb-2">
+                                <a href="https://medlineplus.gov/spanish/" target="_blank" rel="noopener">MedlinePlus (ES)</a>
+                                <div class="small text-muted">Informacion sanitaria fiable.</div>
+                            </li>
+                            <li>
+                                <a href="https://www.sanidad.gob.es/" target="_blank" rel="noopener">Ministerio de Sanidad</a>
+                                <div class="small text-muted">Recomendaciones y guias.</div>
+                            </li>
+                        </ul>
                     </div>
-                </form>
-            </div>
-
-            <div class="dash-card mb-4 d-none" id="alertasMedicoHeader" data-role="medico">
-                <h6 class="mb-2">Alertas de pacientes</h6>
-                <p class="small text-muted mb-0">Mensajes y urgencias reportadas por pacientes.</p>
-            </div>
-
-            <ul class="nav nav-pills pill-nav mb-4" role="tablist" id="alertasTabs" data-role="paciente">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#alertasTodas" type="button" role="tab">Todas</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#alertasSinLeer" type="button" role="tab">Sin leer</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#alertasRecordatorios" type="button" role="tab">Recordatorios</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#alertasInteracciones" type="button" role="tab">Interacciones</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#alertasEmergencias" type="button" role="tab">Emergencias</button>
-                </li>
-            </ul>
-
-            <div class="tab-content">
-                <div class="tab-pane fade show active" id="alertasTodas" role="tabpanel">
-                    <div id="alertasTodasList" class="d-flex flex-column gap-3"></div>
-                </div>
-                <div class="tab-pane fade" id="alertasSinLeer" role="tabpanel">
-                    <div id="alertasSinLeerList" class="d-flex flex-column gap-3"></div>
-                </div>
-                <div class="tab-pane fade" id="alertasRecordatorios" role="tabpanel">
-                    <div id="alertasRecordatoriosList" class="d-flex flex-column gap-3"></div>
-                </div>
-                <div class="tab-pane fade" id="alertasInteracciones" role="tabpanel">
-                    <div id="alertasInteraccionesList" class="d-flex flex-column gap-3"></div>
-                </div>
-                <div class="tab-pane fade" id="alertasEmergencias" role="tabpanel">
-                    <div id="alertasEmergenciasList" class="d-flex flex-column gap-3"></div>
                 </div>
             </div>
         </div>
