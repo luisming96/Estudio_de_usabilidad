@@ -58,8 +58,9 @@
                 <button class="btn btn-primary" data-message="Iniciando nueva dispensacion">Nueva dispensacion</button>
             </div>
 
+            <div class="dashboard-section-title">Prioridades</div>
             <div class="row g-4">
-                <div class="col-lg-4">
+                <div class="col-lg-6">
                     <div class="dash-card">
                         <h6 class="mb-3">Reposiciones proximas</h6>
                         <ul id="reposicionesList" class="list-unstyled mb-0">
@@ -67,27 +68,20 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-6">
                     <div class="dash-card">
-                        <h6 class="mb-3">Interacciones detectadas</h6>
-                        <ul id="interaccionesList" class="list-unstyled mb-0">
-                            <li class="text-muted">Sin interacciones detectadas.</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="dash-card">
-                        <h6 class="mb-3">Mensajes pendientes</h6>
-                        <div class="d-grid gap-2">
-                            <button class="btn btn-outline-primary" data-message="Recordatorio enviado">Enviar recordatorio</button>
-                            <button class="btn btn-outline-primary" data-message="Aviso de renovacion enviado">Avisar renovacion</button>
-                            <button class="btn btn-outline-primary" data-message="Dispensacion confirmada">Confirmar dispensacion</button>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="mb-0">Seguridad clinica</h6>
+                            <span id="interaccionesCount" class="badge text-bg-danger">0</span>
                         </div>
+                        <p id="interaccionesHint" class="small text-muted mb-3">Sin interacciones detectadas.</p>
+                        <button id="interaccionesOpen" class="btn btn-outline-primary w-100">Ver interacciones</button>
                     </div>
                 </div>
             </div>
 
-            <div class="row g-4 mt-1">
+            <div class="dashboard-section-title">Operativa</div>
+            <div class="row g-4">
                 <div class="col-lg-6">
                     <div class="dash-card">
                         <h6 class="mb-3">Control de stock</h6>
@@ -96,7 +90,7 @@
                                 <input id="stockMed" type="text" class="form-control" placeholder="Medicamento">
                             </div>
                             <div class="col-md-3">
-                                <input id="stockCant" type="number" class="form-control" placeholder="Unidades">
+                                <input id="stockCant" type="number" class="form-control" placeholder="Cajas">
                             </div>
                             <div class="col-md-4">
                                 <button type="submit" class="btn btn-outline-primary w-100">Agregar</button>
@@ -107,7 +101,7 @@
                                 <thead>
                                     <tr>
                                         <th>Medicamento</th>
-                                        <th>Unidades</th>
+                                        <th>Cajas</th>
                                     </tr>
                                 </thead>
                                 <tbody id="stockList"></tbody>
@@ -126,7 +120,7 @@
                                 <input id="dispMed" type="text" class="form-control" placeholder="Medicamento">
                             </div>
                             <div class="col-md-2">
-                                <input id="dispUnidades" type="number" class="form-control" placeholder="Unid.">
+                                <input id="dispUnidades" type="number" class="form-control" placeholder="Cajas">
                             </div>
                             <div class="col-md-2">
                                 <button type="submit" class="btn btn-outline-primary w-100">Registrar</button>
@@ -139,6 +133,7 @@
                                         <th>Fecha</th>
                                         <th>Paciente</th>
                                         <th>Medicamento</th>
+                                        <th>Cajas</th>
                                         <th>Unidades</th>
                                     </tr>
                                 </thead>
@@ -148,9 +143,9 @@
                     </div>
                 </div>
             </div>
-
-            <div class="row g-4 mt-1">
-                <div class="col-12">
+            <div class="dashboard-section-title">Pacientes</div>
+            <div class="row g-4">
+                <div class="col-lg-7">
                     <div class="dash-card">
                         <h6 class="mb-3">Inventario por paciente</h6>
                         <div class="table-responsive">
@@ -159,7 +154,7 @@
                                     <tr>
                                         <th>Paciente</th>
                                         <th>Medicamento</th>
-                                        <th>Unidades</th>
+                                        <th>Unidades (cajas)</th>
                                         <th>Estado</th>
                                         <th>Accion</th>
                                     </tr>
@@ -169,35 +164,43 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="row g-4 mt-1">
-                <div class="col-lg-6">
+                <div class="col-lg-5">
                     <div class="dash-card">
-                        <h6 class="mb-3">Avisos a pacientes</h6>
-                        <form id="avisoForm" class="row g-2 mb-3">
-                            <div class="col-md-4">
-                                <input id="avisoPaciente" type="text" class="form-control" placeholder="Paciente">
-                            </div>
-                            <div class="col-md-8">
-                                <input id="avisoTexto" type="text" class="form-control" placeholder="Medicacion lista o renovar receta">
-                            </div>
-                            <div class="col-12">
-                                <button type="submit" class="btn btn-outline-primary w-100">Enviar aviso</button>
-                            </div>
-                        </form>
-                        <div id="avisosList" class="d-flex flex-column gap-2"></div>
+                        <h6 class="mb-3">Resumen por paciente</h6>
+                        <div class="table-responsive">
+                            <table class="table align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Paciente</th>
+                                        <th>Medicamentos</th>
+                                        <th>Unidades</th>
+                                        <th>Prox. reposicion</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="resumenPacientesList"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="dash-card">
-                        <h6 class="mb-3">Alertas de seguridad</h6>
-                        <div class="video-placeholder">Alertas farmacologicas</div>
-                    </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div class="modal fade" id="interaccionesModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Interacciones detectadas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="small text-muted">Revisa estas combinaciones antes de dispensar.</p>
+                    <ul id="interaccionesModalList" class="list-unstyled mb-0"></ul>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
     <footer class="footer-main">
         <div class="container">

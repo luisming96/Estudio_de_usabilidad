@@ -1,4 +1,4 @@
-import { state } from './core.js';
+import { state, UNIDADES_POR_CAJA } from './core.js';
 
 export function initMedico() {
     state.prescripciones = JSON.parse(localStorage.getItem('vitaPrescripciones')) || [];
@@ -31,7 +31,9 @@ export function initMedico() {
                 } : p);
                 state.inventarioPacientes = state.inventarioPacientes.map(i => {
                     if (i.prescId && i.prescId === state.prescripcionEditId) {
-                        return { ...i, paciente, med, unidades: dias * tomas };
+                        const unidades = dias * tomas;
+                        const cajas = Math.ceil(unidades / UNIDADES_POR_CAJA);
+                        return { ...i, paciente, med, unidades, cajas, unidadesPorCaja: UNIDADES_POR_CAJA };
                     }
                     return i;
                 });
@@ -51,11 +53,14 @@ export function initMedico() {
                 };
                 state.prescripciones.unshift(item);
                 const unidades = dias * tomas;
+                const cajas = Math.ceil(unidades / UNIDADES_POR_CAJA);
                 state.inventarioPacientes.unshift({
                     prescId: item.id,
                     paciente,
                     med,
                     unidades,
+                    cajas,
+                    unidadesPorCaja: UNIDADES_POR_CAJA,
                     estado: 'Pendiente',
                     fecha: new Date().toLocaleDateString()
                 });

@@ -1,4 +1,4 @@
-import { state, getActiveUserName, loadMedsForUser, saveMedsForUser, loadHistorialForUser, saveHistorialForUser, matchesPaciente, getAdherenciaSerie, setAdherenciaSerie } from './core.js';
+import { state, getActiveUserName, loadMedsForUser, saveMedsForUser, loadHistorialForUser, saveHistorialForUser, matchesPaciente, getAdherenciaSerie, setAdherenciaSerie, UNIDADES_POR_CAJA } from './core.js';
 
 export function initPatientUI() {
     const isPatientPage = !!document.querySelector(
@@ -32,6 +32,7 @@ export function initPatientUI() {
     renderRecetasPaciente();
     renderMensajesPaciente();
     renderInventarioPaciente();
+    renderAvisosPaciente();
     initAlertaMedico();
 
     initChart();
@@ -1113,13 +1114,16 @@ export function renderInventarioPaciente() {
         list.innerHTML = '<div class="text-muted">Sin inventario asignado.</div>';
         return;
     }
-    list.innerHTML = items.map(i => `
+    list.innerHTML = items.map(i => {
+        const cajas = Math.ceil((i.unidades || 0) / UNIDADES_POR_CAJA);
+        return `
         <div class="border rounded-3 p-2">
             <div class="fw-bold">${i.med}</div>
-            <div class="small text-muted">Unidades: ${i.unidades} | Estado: ${i.estado}</div>
+            <div class="small text-muted">Unidades: ${i.unidades} (${cajas} cajas) | Estado: ${i.estado}</div>
             ${i.estado === 'Listo' ? '<button class="btn btn-sm btn-outline-primary mt-2" data-recogida="' + i.med + '">Marcar recogida</button>' : ''}
         </div>
-    `).join('');
+    `;
+    }).join('');
     list.querySelectorAll('[data-recogida]').forEach(btn => {
         btn.addEventListener('click', () => {
             const med = btn.dataset.recogida;
@@ -1132,6 +1136,23 @@ export function renderInventarioPaciente() {
             renderInventarioPaciente();
         });
     });
+}
+
+export function renderAvisosPaciente() {
+    const list = document.getElementById('avisosPaciente');
+    if (!list) return;
+    const avisos = state.avisosFarmacia.filter(a => matchesPaciente(a.paciente));
+    if (!avisos.length) {
+        list.innerHTML = '<div class="text-muted">Sin avisos de farmacia.</div>';
+        return;
+    }
+    list.innerHTML = avisos.map(a => `
+        <div class="border rounded-3 p-2">
+            <div class="fw-bold">${a.paciente}</div>
+            <div class="small text-muted">${a.fecha}</div>
+            <div>${a.texto}</div>
+        </div>
+    `).join('');
 }
 
 function normalizeText(value) {

@@ -15,10 +15,15 @@ echo 'Actualizando repositorios del sistema...'
 sudo apt update
 echo 'Instalando Git y Nginx...'
 sudo apt install -y git nginx
-echo 'Clonando repositorio desde GitHub...'
-cd /var/www
-sudo rm -rf Estudio_de_usabilidad 2>/dev/null
-sudo git clone https://github.com/luisming96/Estudio_de_usabilidad.git
+echo 'Actualizando repositorio...'
+if [ -d /var/www/Estudio_de_usabilidad/.git ]; then
+    cd /var/www/Estudio_de_usabilidad
+    sudo git fetch origin
+    sudo git reset --hard origin/main
+else
+    cd /var/www
+    sudo git clone https://github.com/luisming96/Estudio_de_usabilidad.git
+fi
 echo 'Configurando permisos...'
 sudo chown -R www-data:www-data /var/www/Estudio_de_usabilidad
 sudo chmod -R 755 /var/www/Estudio_de_usabilidad
@@ -32,6 +37,9 @@ server {
     server_name _;
     location / {
         try_files \\\$uri \\\$uri/ =404;
+    }
+    location /assets/ {
+        alias /var/www/Estudio_de_usabilidad/assets/;
     }
 }
 EOF'

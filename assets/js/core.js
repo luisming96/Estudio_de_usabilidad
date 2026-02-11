@@ -31,6 +31,8 @@ export const dashboardMap = {
     farmaceutico: 'dashboard-farmaceutico.html'
 };
 
+export const UNIDADES_POR_CAJA = 20;
+
 const demoUsers = {
     'correo1@gmail.com': { role: 'paciente', pass: '1234' },
     'correo2@gmail.com': { role: 'medico', pass: '1234' },
@@ -63,6 +65,10 @@ export function setRol(r, options = { redirect: false }) {
 
     const dashLink = document.getElementById('navDashboard');
     if (dashLink) dashLink.href = dashboardMap[state.rolActual];
+
+    document.querySelectorAll('a[aria-label="Centro de alertas"]').forEach((link) => {
+        link.href = state.rolActual === 'farmaceutico' ? 'farmaceutico-comunicacion.html' : 'alertas.html';
+    });
 
     if (options.redirect && document.body.dataset.page && document.body.dataset.page.startsWith('dashboard')) {
         const target = dashboardMap[state.rolActual];
@@ -128,6 +134,16 @@ export function enforceRoleAccess() {
             return false;
         }
         if (state.rolActual !== 'medico') {
+            window.location.href = dashboardMap[state.rolActual] || 'dashboard.html';
+            return false;
+        }
+    }
+    if (page && page === 'farmaceutico-comunicacion') {
+        if (!isAuth) {
+            window.location.href = 'login.html';
+            return false;
+        }
+        if (state.rolActual !== 'farmaceutico') {
             window.location.href = dashboardMap[state.rolActual] || 'dashboard.html';
             return false;
         }
