@@ -31,9 +31,18 @@ export function initMedico() {
                 } : p);
                 state.inventarioPacientes = state.inventarioPacientes.map(i => {
                     if (i.prescId && i.prescId === state.prescripcionEditId) {
-                        const unidades = dias * tomas;
-                        const cajas = Math.ceil(unidades / UNIDADES_POR_CAJA);
-                        return { ...i, paciente, med, unidades, cajas, unidadesPorCaja: UNIDADES_POR_CAJA };
+                        const unidadesReceta = dias * tomas;
+                        const cajas = Math.ceil(unidadesReceta / UNIDADES_POR_CAJA);
+                        const unidades = unidadesReceta;
+                        return {
+                            ...i,
+                            paciente,
+                            med,
+                            unidades,
+                            unidadesReceta,
+                            cajas,
+                            unidadesPorCaja: UNIDADES_POR_CAJA
+                        };
                     }
                     return i;
                 });
@@ -52,13 +61,15 @@ export function initMedico() {
                     estado: 'Pendiente'
                 };
                 state.prescripciones.unshift(item);
-                const unidades = dias * tomas;
-                const cajas = Math.ceil(unidades / UNIDADES_POR_CAJA);
+                const unidadesReceta = dias * tomas;
+                const cajas = Math.ceil(unidadesReceta / UNIDADES_POR_CAJA);
+                const unidades = unidadesReceta;
                 state.inventarioPacientes.unshift({
                     prescId: item.id,
                     paciente,
                     med,
                     unidades,
+                    unidadesReceta,
                     cajas,
                     unidadesPorCaja: UNIDADES_POR_CAJA,
                     estado: 'Pendiente',
@@ -108,6 +119,7 @@ export function initMedico() {
         });
     }
     renderMensajes();
+    applyMensajeDraft();
 
     const buscarHistorialBtn = document.getElementById('buscarHistorial');
     if (buscarHistorialBtn) {
@@ -194,10 +206,13 @@ function renderTratamientosActivos() {
             const paciente = btn.dataset.paciente || '';
             const action = btn.dataset.trat;
             if (action === 'contactar') {
-                const input = document.getElementById('mensajePaciente');
+                /*const input = document.getElementById('mensajePaciente');
                 if (input) input.value = paciente;
                 const texto = document.getElementById('mensajeTexto');
-                if (texto) texto.focus();
+                if (texto) texto.focus();*/
+                const draft = { paciente, texto: '' };
+            localStorage.setItem('vitaMensajeDraft', JSON.stringify(draft));
+            window.location.href = 'medico-comunicacion.html';
                 return;
             }
             if (action === 'revisar') {
@@ -278,17 +293,23 @@ function initNuevoSeguimiento() {
     btn.addEventListener('click', () => {
         const input = document.getElementById('seguimientoPaciente');
         const paciente = input ? input.value.trim() : '';
-        const inputPaciente = document.getElementById('mensajePaciente');
-        const inputTexto = document.getElementById('mensajeTexto');
+        /*const inputPaciente = document.getElementById('mensajePaciente');
+        const inputTexto = document.getElementById('mensajeTexto');*/
 
         if (!paciente) {
                 alert('Selecciona un paciente para iniciar seguimiento.');
             return;
         }
-        if (inputPaciente) inputPaciente.value = paciente;
+        /* if (inputPaciente) inputPaciente.value = paciente;
         if (inputTexto) inputTexto.value = 'Seguimiento: revisar sintomas y adherencia de la semana.';
         const form = document.getElementById('mensajeForm');
-        if (form) form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (form) form.scrollIntoView({ behavior: 'smooth', block: 'start' });*/
+        const draft = {
+            paciente,
+            texto: 'Seguimiento: revisar síntomas y adherencia de la semana.'
+        };
+        localStorage.setItem('vitaMensajeDraft', JSON.stringify(draft));
+        window.location.href = 'medico-comunicacion.html';
     });
 }
 
@@ -583,4 +604,29 @@ function normalizeHistorialItem(item) {
 
 function normalizeName(value) {
     return (value || '').toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '').trim();
+}
+
+function applyMensajeDraft() {
+    const form = document.getElementById('mensajeForm');
+    if (!form) return; // Solo se ejecuta si estamos en la página de comunicación
+
+    const raw = localStorage.getItem('vitaMensajeDraft');
+    if (!raw) return;
+
+    let draft = null;
+    try {
+        draft = JSON.parse(raw);
+    } catch (err) {
+        localStorage.removeItem('vitaMensajeDraft');
+        return;
+    }
+
+    const inputPaciente = document.getElementById('mensajePaciente');
+    const inputTexto = document.getElementById('mensajeTexto');
+    
+    if (inputPaciente && draft.paciente) inputPaciente.value = draft.paciente;
+    if (inputTexto && draft.texto) inputTexto.value = draft.texto;
+
+    localStorage.removeItem('vitaMensajeDraft');
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }

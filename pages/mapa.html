@@ -26,10 +26,12 @@
                 <ul class="navbar-nav mx-auto gap-lg-3 align-items-lg-center">
                     <li class="nav-item"><a class="nav-link" data-nav="inicio" href="index.html">Inicio</a></li>
                     <li class="nav-item"><a id="navDashboard" class="nav-link" data-nav="dashboard" href="dashboard.html">Mi Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" data-nav="salud" href="salud.html">Salud Personal</a></li>
+                    <li class="nav-item" data-role="paciente"><a class="nav-link" data-nav="salud" href="salud.html">Salud Personal</a></li>
                     <li class="nav-item" data-role="paciente"><a class="nav-link" data-nav="herramientas" href="herramientas.html">Herramientas</a></li>
-                    <li class="nav-item"><a class="nav-link" data-nav="seguimiento" href="seguimiento.html">Seguimiento</a></li>
-                    <li class="nav-item"><a class="nav-link" data-nav="analisis" href="analisis.html">Analisis</a></li>
+                    <li class="nav-item" data-role="paciente"><a class="nav-link" data-nav="seguimiento" href="seguimiento.html">Seguimiento</a></li>
+                    <li class="nav-item" data-role="medico"><a class="nav-link" data-nav="medico-comunicacion" href="medico-comunicacion.html">Comunicación</a></li>
+                    <li class="nav-item" data-role="farmaceutico"><a class="nav-link" data-nav="farmaceutico-comunicacion" href="farmaceutico-comunicacion.html">Comunicación</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="analisis" href="analisis.html">Análisis</a></li>
                     <li class="nav-item"><a class="nav-link" data-nav="sobre" href="sobre.html">Sobre Nosotros</a></li>
                     <li class="nav-item"><a class="nav-link" data-nav="mapa" href="mapa.html">Mapa Web</a></li>
                 </ul>
@@ -38,11 +40,6 @@
                         <i class="bi bi-bell"></i>
                         <span id="alertBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">0</span>
                     </a>
-                    <select id="skinSelector" class="form-select form-select-sm skin-select" aria-label="Cambiar tema visual">
-                        <option value="base">Skin Base</option>
-                        <option value="good">Skin Mejorada</option>
-                        <option value="access">Skin Accesible</option>
-                    </select>
                     <a class="btn btn-outline-secondary btn-sm" href="login.html">Acceder</a>
                 </div>
             </div>
@@ -53,74 +50,99 @@
         <div class="container">
             <div class="section-header text-center">
                 <h1 class="section-title">Mapa del Sitio Web</h1>
-                <p class="section-subtitle mx-auto">Indice completo de todas las secciones y paginas de VitaClick.</p>
+                <p class="section-subtitle mx-auto">Índice completo de todas las secciones según tu perfil de usuario.</p>
             </div>
 
             <div class="map-grid">
-                <a class="map-card" href="index.html">
+                <a class="map-card" href="index.html" data-role="all">
                     <div>
-                        <div class="fw-bold">Paginas principales</div>
-                        <div class="small text-muted">Inicio, salud personal y sobre nosotros.</div>
+                        <div class="fw-bold">Inicio</div>
+                        <div class="small text-muted">Página principal y presentación.</div>
                     </div>
                     <i class="bi bi-chevron-right"></i>
                 </a>
-                <a class="map-card" href="salud.html">
+
+                <a class="map-card" href="salud.html" data-role="paciente">
                     <div>
                         <div class="fw-bold">Salud personal</div>
-                        <div class="small text-muted">Perfil medico, historial clinico y tratamientos.</div>
+                        <div class="small text-muted">Perfil médico, historial clínico y tratamientos.</div>
                     </div>
                     <i class="bi bi-chevron-right"></i>
                 </a>
-                <a class="map-card" href="herramientas.html">
+
+                <a class="map-card" href="herramientas.html" data-role="paciente">
                     <div>
                         <div class="fw-bold">Herramientas</div>
                         <div class="small text-muted">Farmacias, consulta de medicamentos e info oficial.</div>
                     </div>
                     <i class="bi bi-chevron-right"></i>
                 </a>
-                <a class="map-card" href="seguimiento.html">
+
+                <a class="map-card" href="seguimiento.html" data-role="paciente">
                     <div>
                         <div class="fw-bold">Seguimiento</div>
-                        <div class="small text-muted">Adherencia, racha y estadisticas.</div>
+                        <div class="small text-muted">Adherencia, racha y estadísticas.</div>
                     </div>
                     <i class="bi bi-chevron-right"></i>
                 </a>
-                <a class="map-card" href="dashboard.html">
+
+                <a class="map-card" href="dashboard.html" data-role="paciente">
                     <div>
-                        <div class="fw-bold">Gestion de medicacion</div>
+                        <div class="fw-bold">Gestión de medicación</div>
                         <div class="small text-muted">Tomas diarias y acciones urgentes.</div>
                     </div>
                     <i class="bi bi-chevron-right"></i>
                 </a>
-                <a class="map-card" href="dashboard-medico.html">
+
+                <a class="map-card" href="dashboard-medico.html" data-role="medico">
                     <div>
-                        <div class="fw-bold">Dashboards por rol</div>
-                        <div class="small text-muted">Paciente, medico y farmaceutico.</div>
+                        <div class="fw-bold">Panel Médico</div>
+                        <div class="small text-muted">Supervisión de pacientes y prescripciones.</div>
                     </div>
                     <i class="bi bi-chevron-right"></i>
                 </a>
-                <a class="map-card" href="medico-comunicacion.html">
+
+                <a class="map-card" href="medico-comunicacion.html" data-role="medico">
                     <div>
-                        <div class="fw-bold">Comunicacion medica</div>
-                        <div class="small text-muted">Mensajes y alertas de pacientes.</div>
+                        <div class="fw-bold">Comunicación médica</div>
+                        <div class="small text-muted">Mensajería y alertas de pacientes.</div>
                     </div>
                     <i class="bi bi-chevron-right"></i>
                 </a>
-                <a class="map-card" href="analisis.html">
+
+                <a class="map-card" href="dashboard-farmaceutico.html" data-role="farmaceutico">
                     <div>
-                        <div class="fw-bold">Analisis</div>
-                        <div class="small text-muted">Videos del estudio.</div>
+                        <div class="fw-bold">Panel Farmacéutico</div>
+                        <div class="small text-muted">Dispensación y control de stock.</div>
                     </div>
                     <i class="bi bi-chevron-right"></i>
                 </a>
-                <a class="map-card" href="sobre.html">
+
+                <a class="map-card" href="farmaceutico-comunicacion.html" data-role="farmaceutico">
+                    <div>
+                        <div class="fw-bold">Comunicación Farmacia</div>
+                        <div class="small text-muted">Alertas de interacciones y avisos.</div>
+                    </div>
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+
+                <a class="map-card" href="analisis.html" data-role="all">
+                    <div>
+                        <div class="fw-bold">Análisis</div>
+                        <div class="small text-muted">Vídeos y detalles del estudio de usabilidad.</div>
+                    </div>
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+
+                <a class="map-card" href="sobre.html" data-role="all">
                     <div>
                         <div class="fw-bold">Sobre nosotros</div>
-                        <div class="small text-muted">Curriculum y contexto academico.</div>
+                        <div class="small text-muted">Información académica y contexto.</div>
                     </div>
                     <i class="bi bi-chevron-right"></i>
                 </a>
-                <a class="map-card" href="alertas.html">
+
+                <a class="map-card" href="alertas.html" data-role="all">
                     <div>
                         <div class="fw-bold">Centro de alertas</div>
                         <div class="small text-muted">Mensajes, recordatorios y emergencias.</div>
@@ -130,11 +152,11 @@
             </div>
 
             <div class="dash-card mt-5">
-                <h5 class="mb-3">Caracteristicas de accesibilidad</h5>
+                <h5 class="mb-3">Características de accesibilidad</h5>
                 <div class="row g-3">
                     <div class="col-md-6">
                         <ul class="list-unstyled mb-0">
-                            <li class="mb-2">Navegacion completa por teclado.</li>
+                            <li class="mb-2">Navegación completa por teclado.</li>
                             <li class="mb-2">Contraste de colores mejorado.</li>
                             <li class="mb-2">Indicadores de foco visibles.</li>
                         </ul>
@@ -142,8 +164,8 @@
                     <div class="col-md-6">
                         <ul class="list-unstyled mb-0">
                             <li class="mb-2">Etiquetas ARIA en elementos clave.</li>
-                            <li class="mb-2">Tipografia clara en skin accesible.</li>
-                            <li class="mb-2">Estructura semantica HTML5.</li>
+                            <li class="mb-2">Tipografía clara en skin accesible.</li>
+                            <li class="mb-2">Estructura semántica HTML5.</li>
                         </ul>
                     </div>
                 </div>
@@ -178,7 +200,6 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="module" src="../assets/js/main.js"></script>
 </body>
 </html>

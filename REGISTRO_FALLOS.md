@@ -86,3 +86,10 @@ Severidad (Baja/Media/Alta): Media
 Skin: Todas
 Captura: (adjunta)
 Notas: Estudio: Usabilidad (sobrecarga). Ya corregido.
+
+ - Verificar mapas web de los 3 roles. ok
+ - añadir dentro de cada usuario mientras estan conectados el rol que asumen dentro de la app para que quede claro en todo momento. ok 
+- Boton nueva dispensacion en farmaceutico tampoco hace nada solo muestra un alert pero no es nada util. los graficos de paciente creo que no funcionan correctament no estoy seguro del todo alomejor si y soy yo que no lo he interpretado correctamente. ok 
+Estos cambios de skins deben de estar integradas en el login en lugar de en el navbar. ok
+
+necesitamos modificar las skins de manera que: 1 sea la buena la que nos da "buena accesibilidad y usabilidad", la segunda skins debe ser no usable "mala usabilidad" y la tercera tiene que ser no accesible "mala accesibilidad" para hacer las comparaciones entre ellas para los estudios de accesibilidad y usabilidad. Para ello no vale solo con tocar colores o css debemos de meternos en el codigo html.

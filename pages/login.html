@@ -33,13 +33,6 @@
                     <li class="nav-item"><a class="nav-link" data-nav="sobre" href="sobre.html">Sobre Nosotros</a></li>
                     <li class="nav-item"><a class="nav-link" data-nav="mapa" href="mapa.html">Mapa Web</a></li>
                 </ul>
-                <div class="d-flex align-items-center gap-2">
-                    <select id="skinSelector" class="form-select form-select-sm skin-select" aria-label="Cambiar tema visual">
-                        <option value="base">Skin Base</option>
-                        <option value="good">Skin Mejorada</option>
-                        <option value="access">Skin Accesible</option>
-                    </select>
-                </div>
             </div>
         </div>
     </nav>
@@ -72,12 +65,16 @@
                                     <option value="farmaceutico">Farmaceutico</option>
                                 </select>
                             </div>
-                            <div class="col-12 d-grid">
-                                <button type="submit" class="btn btn-primary">Entrar</button>
+                            <div class="mb-3">
+                                <label for="skinSelector" class="form-label">Preferencia visual (Skin)</label>
+                                <select id="skinSelector" class="form-select skin-select" aria-label="Cambiar tema visual">
+                                    <option value="base">Skin Base (Estándar)</option>
+                                    <option value="good">Skin Mejorada (Contraste)</option>
+                                    <option value="access">Skin Accesible (Alto Contraste)</option>
+                                </select>
                             </div>
-                            <div class="col-12 d-grid">
-                                <button type="button" id="logoutBtn" class="btn btn-outline-secondary">Cerrar sesion</button>
-                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">Acceder al sistema</button>
                             <div class="col-12">
                                 <div class="small text-muted">
                                     Credenciales demo: correo1@gmail.com (paciente), correo2@gmail.com (medico),

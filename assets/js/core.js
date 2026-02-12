@@ -76,6 +76,35 @@ export function setRol(r, options = { redirect: false }) {
             window.location.href = target;
         }
     }
+
+    const authContainer = document.querySelector('.navbar .d-flex.align-items-center.gap-2');
+    if (authContainer && localStorage.getItem('vitaAuth') === 'true') {
+        let display = document.getElementById('navUserDisplay');
+        if (!display) {
+            display = document.createElement('div');
+            display.id = 'navUserDisplay';
+            display.className = 'd-flex align-items-center gap-2 ms-lg-3';
+            authContainer.appendChild(display);
+            
+            // Oculta el botón "Acceder" original para no duplicar
+            const loginBtn = authContainer.querySelector('a[href="login.html"]');
+            if (loginBtn) loginBtn.style.display = 'none';
+        }
+
+        const nombre = getActiveUserName(); // Usa la función que ya tienes en core.js
+        const rolLabel = state.rolActual.charAt(0).toUpperCase() + state.rolActual.slice(1);
+        
+        display.innerHTML = `
+            <div class="text-end" style="line-height: 1.1">
+                <div style="font-size: 0.85rem; font-weight: 700; color: var(--text);">${nombre}</div>
+                <span class="badge badge-role badge-role-${state.rolActual}">${rolLabel}</span>
+            </div>
+            <button onclick="localStorage.removeItem('vitaAuth'); location.href='index.html';" 
+                    class="btn btn-sm btn-outline-danger ms-2" style="font-size: 0.7rem; padding: 0.2rem 0.5rem;">
+                Salir
+            </button>
+        `;
+    }
 }
 
 export function initNavActive() {
