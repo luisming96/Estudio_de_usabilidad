@@ -565,6 +565,19 @@ body.skin-access .video-placeholder { background: #0b0b0b; color: var(--text); b
 body.role-paciente [data-role]:not([data-role="paciente"], [data-role="all"]) { display: none !important; }
 body.role-medico [data-role]:not([data-role="medico"], [data-role="all"]) { display: none !important; }
 body.role-farmaceutico [data-role]:not([data-role="farmaceutico"], [data-role="all"]) { display: none !important; }
+body.role-guest [data-role]:not([data-role="guest"], [data-role="all"]) { display: none !important; }
+
+body.role-guest a[href$="dashboard.html"],
+body.role-guest a[href$="dashboard-medico.html"],
+body.role-guest a[href$="dashboard-farmaceutico.html"],
+body.role-guest a[href$="salud.html"],
+body.role-guest a[href$="seguimiento.html"],
+body.role-guest a[href$="herramientas.html"],
+body.role-guest a[href$="alertas.html"],
+body.role-guest a[href$="medico-comunicacion.html"],
+body.role-guest a[href$="farmaceutico-comunicacion.html"] {
+    display: none !important;
+}
 
 body.role-medico a[href$="salud.html"],
 body.role-medico a[href$="seguimiento.html"],

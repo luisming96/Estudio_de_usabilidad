@@ -59,14 +59,20 @@ export function initSkinSelector() {
 
 export function setRol(r, options = { redirect: false }) {
     state.rolActual = r || 'paciente';
-    document.body.classList.remove('role-paciente', 'role-medico', 'role-farmaceutico');
-    document.body.classList.add(`role-${state.rolActual}`);
+    const isAuth = localStorage.getItem('vitaAuth') === 'true';
+    const visualRole = isAuth ? state.rolActual : 'guest';
+    document.body.classList.remove('role-paciente', 'role-medico', 'role-farmaceutico', 'role-guest');
+    document.body.classList.add(`role-${visualRole}`);
     localStorage.setItem('vitaRole', state.rolActual);
 
     const dashLink = document.getElementById('navDashboard');
-    if (dashLink) dashLink.href = dashboardMap[state.rolActual];
+    if (dashLink) dashLink.href = isAuth ? (dashboardMap[state.rolActual] || 'dashboard.html') : 'login.html';
 
     document.querySelectorAll('a[aria-label="Centro de alertas"]').forEach((link) => {
+        if (!isAuth) {
+            link.href = 'login.html';
+            return;
+        }
         link.href = state.rolActual === 'farmaceutico' ? 'farmaceutico-comunicacion.html' : 'alertas.html';
     });
 
