@@ -442,7 +442,8 @@ export function render() {
         return;
     }
     const buscadorEl = document.getElementById('buscador');
-    const busq = buscadorEl ? buscadorEl.value.toLowerCase() : '';
+    const busq = buscadorEl ? normalizeText(buscadorEl.value) : '';
+    const hasSearch = busq.length > 0;
     const hoyMs = new Date().setHours(0, 0, 0, 0);
     const ahora = new Date();
     const horaActual = ahora.getHours() * 60 + ahora.getMinutes();
@@ -452,19 +453,25 @@ export function render() {
         const diasRestantes = m.duracionDias - Math.floor(msPasados / 86400000);
 
         if (!m.manual && diasRestantes <= 0) return '';
-        if (!m.nombre.toLowerCase().includes(busq)) return '';
+        if (hasSearch && !normalizeText(m.nombre).includes(busq)) return '';
 
-        let visible = false;
+        let visible = hasSearch;
         let hecho = false;
-        if (m.manual) {
+        if (!hasSearch && m.manual) {
             if (normalizeTurno(m.turnoAuto) === state.filtroActual) {
                 visible = true;
                 hecho = (state.filtroActual === 'mañana' ? m.mHecho : state.filtroActual === 'tarde' ? m.tHecho : m.nHecho);
             }
-        } else {
+        } else if (!hasSearch) {
             if (state.filtroActual === 'mañana') { visible = true; hecho = m.mHecho; }
             if (state.filtroActual === 'tarde' && m.tomasAlDia === 3) { visible = true; hecho = m.tHecho; }
             if (state.filtroActual === 'noche' && m.tomasAlDia >= 2) { visible = true; hecho = m.nHecho; }
+        } else {
+            if (m.manual) {
+                hecho = m.mHecho || m.tHecho || m.nHecho;
+            } else {
+                hecho = m.mHecho && (m.tomasAlDia < 3 || m.tHecho) && (m.tomasAlDia < 2 || m.nHecho);
+            }
         }
 
         if (!visible) return '';

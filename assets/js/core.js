@@ -39,12 +39,414 @@ const demoUsers = {
     'correo3@gmail.com': { role: 'farmaceutico', pass: '1234' }
 };
 
+const navShortLabels = {
+    inicio: 'Ini',
+    dashboard: 'Dash',
+    salud: 'Sal',
+    herramientas: 'Herr',
+    seguimiento: 'Seg',
+    analisis: 'Ana',
+    sobre: 'Info',
+    mapa: 'Mapa',
+    comunicacion: 'Com'
+};
+
+function unwrapStudyTableWrappers() {
+    document.querySelectorAll('.study-table-wrapper').forEach((wrapper) => {
+        const table = wrapper.querySelector('table');
+        if (!table || !wrapper.parentNode) return;
+        wrapper.parentNode.insertBefore(table, wrapper);
+        wrapper.remove();
+    });
+}
+
+function resetStudyEvidenceMutations() {
+    document.body.classList.remove('study-skin-base', 'study-skin-access', 'study-skin-good');
+
+    unwrapStudyTableWrappers();
+
+    document.querySelectorAll('[data-study-original-label]').forEach((element) => {
+        element.textContent = element.dataset.studyOriginalLabel;
+        delete element.dataset.studyOriginalLabel;
+    });
+
+    document.querySelectorAll('[data-study-original-for]').forEach((label) => {
+        label.setAttribute('for', label.dataset.studyOriginalFor);
+        delete label.dataset.studyOriginalFor;
+    });
+
+    document.querySelectorAll('[data-study-original-aria-label]').forEach((element) => {
+        element.setAttribute('aria-label', element.dataset.studyOriginalAriaLabel);
+        delete element.dataset.studyOriginalAriaLabel;
+    });
+
+    document.querySelectorAll('[data-study-had-aria-label="no"]').forEach((element) => {
+        element.removeAttribute('aria-label');
+        delete element.dataset.studyHadAriaLabel;
+    });
+
+    document.querySelectorAll('[data-study-original-tabindex]').forEach((element) => {
+        if (element.dataset.studyOriginalTabindex === 'none') {
+            element.removeAttribute('tabindex');
+        } else {
+            element.setAttribute('tabindex', element.dataset.studyOriginalTabindex);
+        }
+        delete element.dataset.studyOriginalTabindex;
+    });
+
+    document.querySelectorAll('[data-study-original-class]').forEach((element) => {
+        element.className = element.dataset.studyOriginalClass;
+        delete element.dataset.studyOriginalClass;
+    });
+
+    document.querySelectorAll('[data-study-original-options]').forEach((select) => {
+        try {
+            const originalOptions = JSON.parse(select.dataset.studyOriginalOptions);
+            Array.from(select.options).forEach((option, index) => {
+                if (originalOptions[index] !== undefined) {
+                    option.textContent = originalOptions[index];
+                }
+            });
+        } catch (_error) {
+            // noop
+        }
+        delete select.dataset.studyOriginalOptions;
+    });
+
+    document.querySelectorAll('[data-study-original-autocomplete]').forEach((element) => {
+        if (element.dataset.studyOriginalAutocomplete === 'none') {
+            element.removeAttribute('autocomplete');
+        } else {
+            element.setAttribute('autocomplete', element.dataset.studyOriginalAutocomplete);
+        }
+        delete element.dataset.studyOriginalAutocomplete;
+    });
+
+    document.querySelectorAll('[data-study-original-inputmode]').forEach((element) => {
+        if (element.dataset.studyOriginalInputmode === 'none') {
+            element.removeAttribute('inputmode');
+        } else {
+            element.setAttribute('inputmode', element.dataset.studyOriginalInputmode);
+        }
+        delete element.dataset.studyOriginalInputmode;
+    });
+
+    document.querySelectorAll('[data-study-original-rows]').forEach((element) => {
+        element.setAttribute('rows', element.dataset.studyOriginalRows);
+        delete element.dataset.studyOriginalRows;
+    });
+
+    document.querySelectorAll('[data-study-had-rows="no"]').forEach((element) => {
+        element.removeAttribute('rows');
+        delete element.dataset.studyHadRows;
+    });
+
+    document.querySelectorAll('[data-study-original-placeholder]').forEach((element) => {
+        element.setAttribute('placeholder', element.dataset.studyOriginalPlaceholder);
+        delete element.dataset.studyOriginalPlaceholder;
+    });
+
+    document.querySelectorAll('[data-study-had-placeholder="no"]').forEach((element) => {
+        element.removeAttribute('placeholder');
+        delete element.dataset.studyHadPlaceholder;
+    });
+
+    document.querySelectorAll('[data-study-original-type]').forEach((element) => {
+        element.setAttribute('type', element.dataset.studyOriginalType);
+        delete element.dataset.studyOriginalType;
+    });
+
+    document.querySelectorAll('[data-study-had-type="no"]').forEach((element) => {
+        element.removeAttribute('type');
+        delete element.dataset.studyHadType;
+    });
+
+    document.querySelectorAll('[data-study-original-novalidate]').forEach((element) => {
+        if (element.dataset.studyOriginalNovalidate === 'yes') {
+            element.setAttribute('novalidate', 'novalidate');
+        } else {
+            element.removeAttribute('novalidate');
+        }
+        delete element.dataset.studyOriginalNovalidate;
+    });
+
+    document.querySelectorAll('[data-study-had-required="yes"]').forEach((element) => {
+        element.setAttribute('required', 'required');
+        delete element.dataset.studyHadRequired;
+    });
+
+    document.querySelectorAll('[data-study-original-alt]').forEach((element) => {
+        element.setAttribute('alt', element.dataset.studyOriginalAlt);
+        delete element.dataset.studyOriginalAlt;
+    });
+
+    document.querySelectorAll('[data-study-had-alt="no"]').forEach((element) => {
+        element.removeAttribute('alt');
+        delete element.dataset.studyHadAlt;
+    });
+
+    document.querySelectorAll('[data-study-original-lang]').forEach((element) => {
+        element.setAttribute('lang', element.dataset.studyOriginalLang);
+        delete element.dataset.studyOriginalLang;
+    });
+
+    document.querySelectorAll('[data-study-original-aria-hidden]').forEach((element) => {
+        element.setAttribute('aria-hidden', element.dataset.studyOriginalAriaHidden);
+        delete element.dataset.studyOriginalAriaHidden;
+    });
+
+    document.querySelectorAll('[data-study-had-aria-hidden="no"]').forEach((element) => {
+        element.removeAttribute('aria-hidden');
+        delete element.dataset.studyHadAriaHidden;
+    });
+
+    const skipLink = document.querySelector('.skip-link');
+    if (skipLink) {
+        skipLink.removeAttribute('aria-hidden');
+    }
+
+    document.querySelectorAll('.stat-grid').forEach((grid) => {
+        grid.classList.remove('study-force-two-cols');
+    });
+
+    document.querySelectorAll('.page-header').forEach((header) => {
+        header.classList.remove('flex-nowrap', 'overflow-auto');
+    });
+}
+
+function applyBaseStudyEvidence() {
+    document.body.classList.add('study-skin-base');
+
+    unwrapStudyTableWrappers();
+
+    document.querySelectorAll('[data-nav]').forEach((link) => {
+        if (!link.dataset.studyOriginalLabel) {
+            link.dataset.studyOriginalLabel = link.textContent.trim();
+        }
+        const key = link.dataset.nav;
+        if (navShortLabels[key]) {
+            link.textContent = navShortLabels[key];
+        }
+    });
+
+    document.querySelectorAll('form[data-study-grid]').forEach((form) => {
+        if (!form.dataset.studyOriginalClass) {
+            form.dataset.studyOriginalClass = form.className;
+        }
+        if (!form.dataset.studyOriginalNovalidate) {
+            form.dataset.studyOriginalNovalidate = form.hasAttribute('novalidate') ? 'yes' : 'no';
+        }
+        if (!form.dataset.studyOriginalAutocomplete) {
+            form.dataset.studyOriginalAutocomplete = form.getAttribute('autocomplete') || 'none';
+        }
+        form.setAttribute('autocomplete', 'off');
+        form.setAttribute('novalidate', 'novalidate');
+        form.className = 'row g-0 mt-1';
+    });
+
+    document.querySelectorAll('form[data-study-grid] input, form[data-study-grid] textarea').forEach((field) => {
+        if (!field.dataset.studyOriginalAutocomplete) {
+            field.dataset.studyOriginalAutocomplete = field.getAttribute('autocomplete') || 'none';
+        }
+        field.setAttribute('autocomplete', 'off');
+    });
+
+    document.querySelectorAll('form[data-study-grid] select').forEach((select) => {
+        if (!select.dataset.studyOriginalOptions) {
+            const options = Array.from(select.options).map((option) => option.textContent);
+            select.dataset.studyOriginalOptions = JSON.stringify(options);
+        }
+
+        Array.from(select.options).forEach((option, index) => {
+            option.textContent = index === 0 ? 'Elegir' : `Opcion ${index}`;
+        });
+    });
+
+    document.querySelectorAll('input[placeholder], textarea[placeholder]').forEach((field) => {
+        if (!field.dataset.studyOriginalPlaceholder) {
+            field.dataset.studyOriginalPlaceholder = field.getAttribute('placeholder');
+        }
+        field.setAttribute('placeholder', '...');
+    });
+
+    document.querySelectorAll('input:not([placeholder]), textarea:not([placeholder])').forEach((field) => {
+        if (!field.dataset.studyHadPlaceholder) {
+            field.dataset.studyHadPlaceholder = 'no';
+        }
+        field.setAttribute('placeholder', '...');
+    });
+
+    document.querySelectorAll('input[type="email"], input[type="password"], input[type="tel"], input[type="number"], input[type="date"]').forEach((field) => {
+        if (!field.dataset.studyOriginalType) {
+            field.dataset.studyOriginalType = field.getAttribute('type') || 'text';
+        }
+        if (!field.dataset.studyOriginalInputmode) {
+            field.dataset.studyOriginalInputmode = field.getAttribute('inputmode') || 'none';
+        }
+        field.setAttribute('type', 'text');
+        field.setAttribute('inputmode', 'text');
+    });
+
+    document.querySelectorAll('textarea').forEach((field) => {
+        if (field.hasAttribute('rows')) {
+            if (!field.dataset.studyOriginalRows) {
+                field.dataset.studyOriginalRows = field.getAttribute('rows');
+            }
+        } else if (!field.dataset.studyHadRows) {
+            field.dataset.studyHadRows = 'no';
+        }
+        field.setAttribute('rows', '1');
+    });
+
+    document.querySelectorAll('.btn-primary, .btn-outline-primary').forEach((button) => {
+        const label = button.textContent.trim();
+        if (!label) return;
+        if (!button.dataset.studyOriginalLabel) {
+            button.dataset.studyOriginalLabel = label;
+        }
+        button.textContent = 'OK';
+
+        const belongsToLoginForm = !!button.closest('#loginForm');
+        if (belongsToLoginForm) {
+            return;
+        }
+
+        if (!button.dataset.studyOriginalType) {
+            if (button.hasAttribute('type')) {
+                button.dataset.studyOriginalType = button.getAttribute('type');
+            } else {
+                button.dataset.studyHadType = 'no';
+                button.dataset.studyOriginalType = 'submit';
+            }
+        }
+
+        button.setAttribute('type', 'button');
+    });
+
+    document.querySelectorAll('.form-label, .page-title, .section-title, .dashboard-section-title').forEach((element) => {
+        const label = element.textContent.trim();
+        if (!label) return;
+        if (!element.dataset.studyOriginalLabel) {
+            element.dataset.studyOriginalLabel = label;
+        }
+        element.textContent = 'Dato';
+    });
+
+    document.querySelectorAll('input[required], select[required], textarea[required]').forEach((field) => {
+        field.dataset.studyHadRequired = 'yes';
+        field.removeAttribute('required');
+    });
+
+    document.querySelectorAll('.page-header').forEach((header) => {
+        header.classList.add('flex-nowrap', 'overflow-auto');
+    });
+
+    document.querySelectorAll('.stat-grid').forEach((grid) => {
+        grid.classList.add('study-force-two-cols');
+    });
+}
+
+function applyAccessStudyEvidence() {
+    document.body.classList.add('study-skin-access');
+
+    if (!document.documentElement.dataset.studyOriginalLang) {
+        document.documentElement.dataset.studyOriginalLang = document.documentElement.getAttribute('lang') || 'es';
+    }
+    document.documentElement.setAttribute('lang', 'en');
+
+    const skipLink = document.querySelector('.skip-link');
+    if (skipLink) {
+        if (!skipLink.dataset.studyOriginalTabindex) {
+            skipLink.dataset.studyOriginalTabindex = skipLink.getAttribute('tabindex') || 'none';
+        }
+        skipLink.setAttribute('tabindex', '-1');
+        skipLink.setAttribute('aria-hidden', 'true');
+    }
+
+    document.querySelectorAll('label[for]').forEach((label) => {
+        if (!label.dataset.studyOriginalFor) {
+            label.dataset.studyOriginalFor = label.getAttribute('for');
+        }
+        label.removeAttribute('for');
+    });
+
+    document.querySelectorAll('a[aria-label], button[aria-label], input[aria-label], select[aria-label], textarea[aria-label]').forEach((element) => {
+        if (!element.dataset.studyOriginalAriaLabel) {
+            element.dataset.studyOriginalAriaLabel = element.getAttribute('aria-label');
+        }
+        element.removeAttribute('aria-label');
+    });
+
+    document.querySelectorAll('a:not([aria-label]), button:not([aria-label]), input:not([aria-label]), select:not([aria-label]), textarea:not([aria-label])').forEach((element) => {
+        if (!element.dataset.studyHadAriaLabel) {
+            element.dataset.studyHadAriaLabel = 'no';
+        }
+    });
+
+    document.querySelectorAll('img').forEach((image) => {
+        const hadAlt = image.hasAttribute('alt');
+        if (hadAlt) {
+            if (!image.dataset.studyOriginalAlt) {
+                image.dataset.studyOriginalAlt = image.getAttribute('alt');
+            }
+        } else {
+            image.dataset.studyHadAlt = 'no';
+        }
+        image.setAttribute('alt', '');
+    });
+
+    document.querySelectorAll('a, button, input, select, textarea').forEach((element) => {
+        if (!element.dataset.studyOriginalTabindex) {
+            element.dataset.studyOriginalTabindex = element.getAttribute('tabindex') || 'none';
+        }
+        element.setAttribute('tabindex', '-1');
+    });
+
+    document.querySelectorAll('h1, h2, h3, .page-title, .section-title').forEach((element) => {
+        if (element.hasAttribute('aria-hidden')) {
+            if (!element.dataset.studyOriginalAriaHidden) {
+                element.dataset.studyOriginalAriaHidden = element.getAttribute('aria-hidden');
+            }
+        } else if (!element.dataset.studyHadAriaHidden) {
+            element.dataset.studyHadAriaHidden = 'no';
+        }
+        element.setAttribute('aria-hidden', 'true');
+    });
+}
+
+function applyGoodStudyEvidence() {
+    document.body.classList.add('study-skin-good');
+
+    const skipLink = document.querySelector('.skip-link');
+    if (skipLink) {
+        skipLink.setAttribute('tabindex', '0');
+        skipLink.removeAttribute('aria-hidden');
+    }
+
+    document.querySelectorAll('table').forEach((table) => {
+        const parent = table.parentElement;
+        if (parent && parent.classList.contains('table-responsive')) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'table-responsive study-table-wrapper';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+    });
+}
+
+function applyStudyEvidenceBySkin(skin) {
+    resetStudyEvidenceMutations();
+    if (skin === 'base') applyBaseStudyEvidence();
+    if (skin === 'access') applyAccessStudyEvidence();
+    if (skin === 'good') applyGoodStudyEvidence();
+}
+
 export function setSkin(s) {
     state.skinActual = s || 'base';
     document.body.classList.remove('skin-base', 'skin-good', 'skin-access');
     if (state.skinActual === 'good') document.body.classList.add('skin-good');
     if (state.skinActual === 'access') document.body.classList.add('skin-access');
     if (state.skinActual === 'base') document.body.classList.add('skin-base');
+    applyStudyEvidenceBySkin(state.skinActual);
     localStorage.setItem('vitaSkin', state.skinActual);
 }
 

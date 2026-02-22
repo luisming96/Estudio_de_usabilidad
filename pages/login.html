@@ -44,7 +44,7 @@
                     <div class="dash-card">
                         <h2 class="mb-2">Acceso a VitaClick</h2>
                         <p class="text-muted">Simula la identificacion para proteger tus datos medicos.</p>
-                        <form id="loginForm" class="row g-3 mt-2">
+                        <form id="loginForm" class="row g-3 mt-2" data-study-grid="login">
                             <div class="col-12">
                                 <label class="form-label">Nombre</label>
                                 <input id="loginNombre" type="text" class="form-control" placeholder="Tu nombre" required>
@@ -65,16 +65,18 @@
                                     <option value="farmaceutico">Farmaceutico</option>
                                 </select>
                             </div>
-                            <div class="mb-3">
-                                <label for="skinSelector" class="form-label">Preferencia visual (Skin)</label>
+                            <div class="col-12">
+                                <label for="skinSelector" class="form-label">Seleccion de skin para estudio</label>
                                 <select id="skinSelector" class="form-select skin-select" aria-label="Cambiar tema visual">
-                                    <option value="base">Skin Base (Estándar)</option>
-                                    <option value="good">Skin Mejorada (Contraste)</option>
-                                    <option value="access">Skin Accesible (Alto Contraste)</option>
+                                    <option value="base">Skin A · Mala usabilidad + mal responsive</option>
+                                    <option value="access">Skin B · Mala accesibilidad</option>
+                                    <option value="good">Skin C · Buena (usabilidad + accesibilidad + responsive)</option>
                                 </select>
+                                <div class="form-text">Usa esta selección para grabar comparativas entre experiencia mala y experiencia buena.</div>
                             </div>
-
-                            <button type="submit" class="btn btn-primary w-100">Acceder al sistema</button>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary w-100">Acceder al sistema</button>
+                            </div>
                             <div class="col-12">
                                 <div class="small text-muted">
                                     Credenciales demo: correo1@gmail.com (paciente), correo2@gmail.com (medico),

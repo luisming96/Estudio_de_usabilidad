@@ -1004,3 +1004,408 @@ body.skin-access :focus-visible { outline: 3px solid #fef08a; outline-offset: 3p
 .badge-role-farmaceutico { background: #fef9c3; color: #854d0e; }
 /* Soporte para modo accesible */
 body.skin-access .badge-role { border: 1px solid currentColor; background: transparent !important; }
+
+/* =========================================================
+   ESTUDIO DE SKINS (2026)
+   - skin-base: mala usabilidad + mal responsive
+   - skin-access: mala accesibilidad
+   - skin-good: buena usabilidad + buen responsive + buena accesibilidad
+   ========================================================= */
+
+/* SKIN BASE: intencionalmente peor para estudio de usabilidad y responsive */
+body.skin-base {
+    font-size: 0.9rem;
+}
+
+body.skin-base .nav-main .nav-link {
+    font-size: 0.82rem;
+    padding: 0.15rem 0.45rem;
+    color: #9ca3af;
+}
+
+body.skin-base .dash-card,
+body.skin-base .card-soft,
+body.skin-base .video-card,
+body.skin-base .alert-card {
+    padding: 0.8rem;
+    border-radius: 0.55rem;
+}
+
+body.skin-base .btn,
+body.skin-base .form-control,
+body.skin-base .form-select {
+    font-size: 0.82rem;
+    padding: 0.3rem 0.55rem;
+}
+
+body.skin-base .section-title,
+body.skin-base .page-title {
+    font-size: 1.25rem;
+    letter-spacing: 0.02em;
+    color: #6b7280;
+}
+
+@media (max-width: 768px) {
+    body.skin-base .container,
+    body.skin-base .container-fluid {
+        padding-left: 0.3rem;
+        padding-right: 0.3rem;
+    }
+
+    body.skin-base .row {
+        --bs-gutter-x: 0.35rem;
+        --bs-gutter-y: 0.35rem;
+    }
+
+    body.skin-base .navbar-nav {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        white-space: nowrap;
+        gap: 0.25rem;
+    }
+
+    body.skin-base .navbar-nav .nav-link {
+        min-width: max-content;
+    }
+
+    body.skin-base .page-header {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+
+    body.skin-base .stat-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* SKIN ACCESS: intencionalmente peor para estudio de accesibilidad */
+body.skin-access {
+    --page-bg: #f5f5f5;
+    --card-bg: #ffffff;
+    --text: #8b8b8b;
+    --muted: #9b9b9b;
+    --accent: #b7b7b7;
+    --accent-soft: #efefef;
+    --accent-strong: #a3a3a3;
+    --border: #e7e7e7;
+    font-size: 0.85rem;
+}
+
+body.skin-access::before,
+body.skin-access::after {
+    display: none;
+}
+
+body.skin-access .nav-main,
+body.skin-access .dash-card,
+body.skin-access .card-soft,
+body.skin-access .video-card,
+body.skin-access .alert-card,
+body.skin-access .map-card {
+    box-shadow: none;
+    border-color: #ececec;
+}
+
+body.skin-access .btn,
+body.skin-access .form-control,
+body.skin-access .form-select,
+body.skin-access .nav-main .nav-link {
+    color: #a0a0a0 !important;
+}
+
+body.skin-access .btn-primary,
+body.skin-access .btn-danger,
+body.skin-access .btn-outline-primary {
+    background: #e5e5e5 !important;
+    border-color: #dddddd !important;
+}
+
+body.skin-access :focus,
+body.skin-access :focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* SKIN GOOD: solución completa (accesible + usable + responsive) */
+body.skin-good {
+    --page-bg: #eef6ff;
+    --card-bg: #ffffff;
+    --text: #0f172a;
+    --muted: #475569;
+    --accent: #0f6bff;
+    --accent-soft: #dbeafe;
+    --accent-strong: #1d4ed8;
+    --border: #dbe3ef;
+    font-size: 1rem;
+}
+
+body.skin-good .nav-main .nav-link {
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.4rem 0.85rem;
+}
+
+body.skin-good .btn,
+body.skin-good .form-control,
+body.skin-good .form-select,
+body.skin-good .nav-link {
+    min-height: 44px;
+}
+
+body.skin-good .dash-card,
+body.skin-good .card-soft,
+body.skin-good .video-card,
+body.skin-good .alert-card {
+    border-radius: 1rem;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+body.skin-good .page-title,
+body.skin-good .section-title {
+    color: #0b1220;
+}
+
+body.skin-good :focus-visible {
+    outline: 3px solid #0f6bff;
+    outline-offset: 3px;
+}
+
+@media (max-width: 992px) {
+    body.skin-good .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    body.skin-good .navbar-nav {
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    body.skin-good .container,
+    body.skin-good .container-fluid {
+        padding-left: 0.9rem;
+        padding-right: 0.9rem;
+    }
+
+    body.skin-good .stat-grid,
+    body.skin-good .hero-metrics {
+        grid-template-columns: 1fr;
+    }
+
+    body.skin-good .dash-card,
+    body.skin-good .card-soft,
+    body.skin-good .video-card {
+        padding: 1rem;
+    }
+
+    body.skin-good .navbar-nav .nav-link {
+        display: flex;
+        align-items: center;
+    }
+
+    body.skin-good .table-responsive {
+        border-radius: 0.75rem;
+        border: 1px solid var(--border);
+    }
+}
+
+/* Soporte visual para mutaciones de estudio aplicadas desde JS */
+body.study-skin-base form[data-study-grid] {
+    row-gap: 0 !important;
+    column-gap: 0 !important;
+}
+
+body.study-skin-base form[data-study-grid] > [class*='col'] {
+    flex: 0 0 33.3333% !important;
+    max-width: 33.3333% !important;
+}
+
+@media (max-width: 420px) {
+    body.study-skin-base form[data-study-grid] > [class*='col'] {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+    }
+}
+
+body.study-skin-base .btn {
+    min-height: 24px !important;
+    padding: 0.08rem 0.3rem !important;
+    font-size: 0.68rem !important;
+}
+
+body.study-skin-base .form-control,
+body.study-skin-base .form-select {
+    min-height: 30px !important;
+}
+
+body.study-skin-base .study-force-two-cols {
+    grid-template-columns: repeat(3, minmax(180px, 1fr)) !important;
+}
+
+body.study-skin-base .stat-box {
+    min-width: 180px;
+}
+
+body.study-skin-base .stat-grid {
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+
+body.study-skin-base .page-header {
+    scrollbar-width: thin;
+}
+
+@media (max-width: 768px) {
+    body.study-skin-base .navbar-toggler {
+        display: none !important;
+    }
+
+    body.study-skin-base .navbar-collapse {
+        display: none !important;
+    }
+
+    body.study-skin-base main > .container,
+    body.study-skin-base main > .container-fluid {
+        min-width: 430px;
+    }
+
+    body.study-skin-base .video-card,
+    body.study-skin-base .map-card,
+    body.study-skin-base .alert-card {
+        min-width: 420px;
+    }
+
+    body.study-skin-base .chart-wrap {
+        min-width: 520px;
+    }
+
+    body.study-skin-base[data-page='inicio'] .hero-list {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 0.85rem;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    body.study-skin-base[data-page='inicio'] .hero-list > div {
+        min-width: 170px;
+        max-width: 170px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    body.study-skin-base[data-page='inicio'] .hero-list > div span {
+        display: inline-block;
+        max-width: 130px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: bottom;
+    }
+
+    body.study-skin-base .page-header > * {
+        min-width: 520px;
+        flex: 0 0 auto;
+    }
+
+    body.study-skin-base .footer-main .row {
+        flex-wrap: nowrap;
+        min-width: 760px;
+    }
+
+    body.study-skin-base .footer-main .row > [class*='col'] {
+        min-width: 220px;
+    }
+}
+
+body.study-skin-base table {
+    min-width: 980px !important;
+}
+
+body.study-skin-access .skip-link {
+    display: none;
+}
+
+body.study-skin-access label.form-label {
+    color: #b8b8b8 !important;
+    font-size: 0.72rem !important;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+body.study-skin-access img {
+    filter: grayscale(1) contrast(0.7);
+}
+
+body.study-skin-good .table-responsive {
+    margin-bottom: 1rem;
+}
+
+body.study-skin-good form[data-study-grid] > [class*='col'] {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+}
+
+body.study-skin-good .btn,
+body.study-skin-good .form-control,
+body.study-skin-good .form-select {
+    min-height: 46px !important;
+}
+
+body.study-skin-good .task-card .text-end {
+    min-width: 104px;
+    flex-shrink: 0;
+}
+
+body.skin-good .task-card .text-end .btn {
+    min-width: 96px;
+    width: auto !important;
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+    body.study-skin-good .page-header > .d-none.d-md-block {
+        display: block !important;
+        width: 100%;
+        margin-top: 0.35rem;
+        text-align: left !important;
+    }
+}
+
+@media (max-width: 350px) {
+    body.skin-good .task-card .card-body > .d-flex {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    body.skin-good .task-card .text-end {
+        width: 100%;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+
+    body.skin-good .task-card .text-end .btn {
+        width: 100% !important;
+        min-width: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    body.study-skin-good main > .container,
+    body.study-skin-good main > .container-fluid {
+        min-width: 0 !important;
+    }
+}
+
+body.study-skin-good .dash-card,
+body.study-skin-good .card-soft,
+body.study-skin-good .video-card,
+body.study-skin-good .map-card,
+body.study-skin-good .alert-card {
+    min-width: 0 !important;
+}
