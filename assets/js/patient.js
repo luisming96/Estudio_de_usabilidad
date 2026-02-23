@@ -16,8 +16,15 @@ export function initPatientUI() {
     }
 
     cargarPerfil();
+    const profileForm = document.getElementById('profileForm');
+    if (profileForm) profileForm.addEventListener('submit', guardarPerfil);
     const saveProfileBtn = document.getElementById('saveProfile');
-    if (saveProfileBtn) saveProfileBtn.addEventListener('click', guardarPerfil);
+    if (saveProfileBtn) {
+        saveProfileBtn.addEventListener('click', (event) => {
+            if (saveProfileBtn.getAttribute('type') === 'submit') return;
+            guardarPerfil(event);
+        });
+    }
 
     renderHistorial();
     const addHistorialBtn = document.getElementById('addHistorial');
@@ -954,7 +961,19 @@ export function cargarPerfil() {
     if (get('perfilNotas')) get('perfilNotas').value = state.perfilActual.notas || '';
 }
 
-export function guardarPerfil() {
+export function guardarPerfil(event) {
+    const form = document.getElementById('profileForm');
+    if (!form) return;
+
+    if (event) {
+        event.preventDefault();
+    }
+
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+
     const get = (id) => document.getElementById(id);
     if (!get('perfilNombre')) return;
     state.perfilActual = {

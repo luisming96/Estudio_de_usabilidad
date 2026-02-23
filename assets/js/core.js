@@ -304,7 +304,7 @@ function applyBaseStudyEvidence() {
         if (!button.dataset.studyOriginalLabel) {
             button.dataset.studyOriginalLabel = label;
         }
-        button.textContent = 'OK';
+        button.textContent = 'OK'; // se destruye la claridad
 
         const belongsToLoginForm = !!button.closest('#loginForm');
         if (belongsToLoginForm) {
@@ -320,7 +320,7 @@ function applyBaseStudyEvidence() {
             }
         }
 
-        button.setAttribute('type', 'button');
+        button.setAttribute('type', 'button'); // Anula la función de envío nativa
     });
 
     document.querySelectorAll('.form-label, .page-title, .section-title, .dashboard-section-title').forEach((element) => {
@@ -332,6 +332,7 @@ function applyBaseStudyEvidence() {
         element.textContent = 'Dato';
     });
 
+    //Quita el atributo required a los campos.
     document.querySelectorAll('input[required], select[required], textarea[required]').forEach((field) => {
         field.dataset.studyHadRequired = 'yes';
         field.removeAttribute('required');
