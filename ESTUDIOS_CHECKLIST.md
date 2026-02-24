@@ -107,7 +107,7 @@
 
 ---
 
-## MATRIZ 2/3: ESTUDIO DE USABILIDAD (10 puntos)
+## MATRIZ 2/3: ESTUDIO DE USABILIDAD (9 puntos)
 
 [ ] **U1 - Reconocimiento en navegación**
 
@@ -181,16 +181,7 @@
 - Principio de Nielsen: **Flexibilidad y eficiencia de uso**.
 - Frase para vídeo: "Al quitar autocompletado se fuerza trabajo repetitivo; en la skin buena se acelera el flujo de entrada."
 
-[ ] **U9 - Integridad del flujo**
-
-- Skin con problema: `skin-base`.
-- Mala práctica: botones de envío mutados a `type="button"` (no envían).
-- Solución en `skin-good`: envío funcional restaurado.
-- Cambio HTML/atributo: mutación de atributo `type` en `<button>`.
-- Principio de Nielsen: **Visibilidad del estado del sistema**.
-- Frase para vídeo: "En la skin mala la acción no produce resultado y rompe el flujo; en la buena el envío vuelve a funcionar."
-
-[ ] **U10 - Densidad y escaneabilidad**
+[ ] **U9 - Densidad y escaneabilidad**
 
 - Skin con problema: `skin-base`.
 - Mala práctica: layout comprimido (`row g-0`, métricas forzadas, bloques densos).

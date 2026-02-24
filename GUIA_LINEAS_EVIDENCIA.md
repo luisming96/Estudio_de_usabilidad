@@ -84,7 +84,7 @@
   - Qué mostrar: en `skin-base` el footer queda en fila rígida y desborda; en `skin-good` apila correctamente.
   - Frase corta: “La base bloquea el wrap del footer; la buena devuelve el apilado vertical en móvil.”
 
-## Evidencias Usabilidad (U1-U10)
+## Evidencias Usabilidad (U1-U9)
 
 ### Qué cambia en la app (Usabilidad)
 
@@ -96,8 +96,7 @@
 - U6: campos especiales degradados a `text` vs teclado/control correcto según dato (`email`, `date`, `number`).
 - U7: formulario deja enviar datos inválidos vs validación que bloquea errores.
 - U8: autocompletado desactivado vs autocompletado operativo.
-- U9: botón de envío no ejecuta acción vs envío funcional.
-- U10: interfaz comprimida y densa vs bloques legibles con mejor escaneo.
+- U9: interfaz comprimida y densa vs bloques legibles con mejor escaneo.
 
 - U1 Etiquetas ambiguas de navegación:
   - [mapa de etiquetas cortas](assets/js/core.js#L42-L50)
@@ -116,9 +115,8 @@
   - [novalidate activado](assets/js/core.js#L243)
 - U8 Autocompletado desactivado:
   - [autocomplete off en form y campos](assets/js/core.js#L239-L251)
-- U9 Botones submit rotos:
-  - [type button en CTA](assets/js/core.js#L323)
-- U10 Densidad/escaneabilidad degradada:
+
+- U9 Densidad/escaneabilidad degradada:
   - [formularios compactos + métricas forzadas](assets/js/core.js#L244-L346)
 
 ## Evidencias Accesibilidad (A1-A10)
