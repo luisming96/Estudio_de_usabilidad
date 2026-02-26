@@ -193,9 +193,11 @@ function renderTratamientosActivos() {
                 <td>${p.paciente}</td>
                 <td>${p.med}${p.dias ? ` ${p.dias} dias` : ''}</td>
                 <td><span class="badge ${badge}">${estadoLabel}</span></td>
-                <td class="d-flex gap-2">
-                    <button class="btn btn-sm btn-outline-primary" data-trat="revisar" data-paciente="${p.paciente}">Revisar</button>
-                    <button class="btn btn-sm btn-outline-primary" data-trat="contactar" data-paciente="${p.paciente}">Contactar</button>
+                <td>
+                    <div class="d-flex flex-wrap gap-2">
+                        <button class="btn btn-sm btn-outline-primary" data-trat="revisar" data-paciente="${p.paciente}">Revisar</button>
+                        <button class="btn btn-sm btn-outline-primary" data-trat="contactar" data-paciente="${p.paciente}">Contactar</button>
+                    </div>
                 </td>
             </tr>
         `;
@@ -429,9 +431,11 @@ export function renderPrescripciones() {
             <td>${p.paciente}</td>
             <td>${p.med}${p.notas ? `<div class="small text-muted">${p.notas}</div>` : ''}</td>
             <td><span class="badge ${p.estado === 'Activo' ? 'text-bg-success' : 'text-bg-warning'}">${p.estado}</span></td>
-            <td class="d-flex gap-2">
-                <button class="btn btn-sm btn-outline-primary" data-presc="${p.id}">Editar</button>
-                <button class="btn btn-sm btn-outline-danger" data-del-presc="${p.id}">Eliminar</button>
+            <td>
+                <div class="d-flex flex-wrap gap-2">
+                    <button class="btn btn-sm btn-outline-primary" data-presc="${p.id}">Editar</button>
+                    <button class="btn btn-sm btn-outline-danger" data-del-presc="${p.id}">Eliminar</button>
+                </div>
             </td>
         </tr>
     `).join('');

@@ -52,7 +52,7 @@ const navShortLabels = {
 };
 
 function unwrapStudyTableWrappers() {
-    document.querySelectorAll('.study-table-wrapper').forEach((wrapper) => {
+    document.querySelectorAll('.study-table-wrapper[data-study-generated-wrapper="true"]').forEach((wrapper) => {
         const table = wrapper.querySelector('table');
         if (!table || !wrapper.parentNode) return;
         wrapper.parentNode.insertBefore(table, wrapper);
@@ -368,7 +368,7 @@ function applyAccessStudyEvidence() {
         if (!label.dataset.studyOriginalFor) {
             label.dataset.studyOriginalFor = label.getAttribute('for');
         }
-        label.removeAttribute('for');
+        label.removeAttribute('for'); 
     });
 
     document.querySelectorAll('a[aria-label], button[aria-label], input[aria-label], select[aria-label], textarea[aria-label]').forEach((element) => {
@@ -424,13 +424,12 @@ function applyGoodStudyEvidence() {
         skipLink.removeAttribute('aria-hidden');
     }
 
-    document.querySelectorAll('table').forEach((table) => {
-        const parent = table.parentElement;
-        if (parent && parent.classList.contains('table-responsive')) return;
-        const wrapper = document.createElement('div');
-        wrapper.className = 'table-responsive study-table-wrapper';
-        table.parentNode.insertBefore(wrapper, table);
-        wrapper.appendChild(table);
+    document.querySelectorAll('label.form-label:not([for])').forEach((label) => {
+        const container = label.parentElement;
+        if (!container) return;
+        const field = container.querySelector('input, select, textarea');
+        if (!field || !field.id) return;
+        label.setAttribute('for', field.id);
     });
 }
 

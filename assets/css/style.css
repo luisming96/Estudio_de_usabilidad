@@ -1126,6 +1126,7 @@ body.skin-access :focus,
 body.skin-access :focus-visible {
     outline: none !important;
     box-shadow: none !important;
+    border-color: #dee2e6 !important;
 }
 
 /* SKIN GOOD: solución completa (accesible + usable + responsive) */
@@ -1211,6 +1212,7 @@ body.skin-good :focus-visible {
         border: 1px solid var(--border);
     }
 }
+
 
 /* Soporte visual para mutaciones de estudio aplicadas desde JS */
 body.study-skin-base form[data-study-grid] {
@@ -1409,3 +1411,57 @@ body.study-skin-good .map-card,
 body.study-skin-good .alert-card {
     min-width: 0 !important;
 }
+
+@media (max-width: 424px) {
+    body[data-page='dashboard'].skin-good #tratamientosActivosList td .btn,
+    body[data-page='dashboard'].study-skin-good #tratamientosActivosList td .btn,
+    body[data-page='dashboard'].skin-good #prescripcionesList td .btn,
+    body[data-page='dashboard'].study-skin-good #prescripcionesList td .btn {
+        width: 100%;
+        min-width: 0;
+    }
+
+    body[data-page='dashboard'].skin-good .study-table-wrapper.table-responsive,
+    body[data-page='dashboard'].study-skin-good .study-table-wrapper.table-responsive {
+        overflow-x: hidden;
+    }
+
+    body[data-page='dashboard'].skin-good #tablaTratamientosActivos,
+    body[data-page='dashboard'].skin-good #tablaPrescripciones,
+    body[data-page='dashboard'].skin-good #tablaCumplimiento,
+    body[data-page='dashboard'].study-skin-good #tablaTratamientosActivos,
+    body[data-page='dashboard'].study-skin-good #tablaPrescripciones,
+    body[data-page='dashboard'].study-skin-good #tablaCumplimiento {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    body[data-page='dashboard'].skin-good #tablaTratamientosActivos th,
+    body[data-page='dashboard'].skin-good #tablaTratamientosActivos td,
+    body[data-page='dashboard'].skin-good #tablaPrescripciones th,
+    body[data-page='dashboard'].skin-good #tablaPrescripciones td,
+    body[data-page='dashboard'].skin-good #tablaCumplimiento th,
+    body[data-page='dashboard'].skin-good #tablaCumplimiento td,
+    body[data-page='dashboard'].study-skin-good #tablaTratamientosActivos th,
+    body[data-page='dashboard'].study-skin-good #tablaTratamientosActivos td,
+    body[data-page='dashboard'].study-skin-good #tablaPrescripciones th,
+    body[data-page='dashboard'].study-skin-good #tablaPrescripciones td,
+    body[data-page='dashboard'].study-skin-good #tablaCumplimiento th,
+    body[data-page='dashboard'].study-skin-good #tablaCumplimiento td {
+        white-space: normal;
+        overflow-wrap: anywhere;
+        font-size: 0.8rem;
+        line-height: 1.2;
+        padding: 0.45rem 0.35rem;
+    }
+
+    body[data-page='dashboard'].skin-good #tablaTratamientosActivos td > .d-flex,
+    body[data-page='dashboard'].skin-good #tablaPrescripciones td > .d-flex,
+    body[data-page='dashboard'].study-skin-good #tablaTratamientosActivos td > .d-flex,
+    body[data-page='dashboard'].study-skin-good #tablaPrescripciones td > .d-flex {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.35rem !important;
+    }
+}
+
