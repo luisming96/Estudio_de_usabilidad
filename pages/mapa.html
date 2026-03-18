@@ -46,130 +46,68 @@
         </div>
     </nav>
 
-    <main id="mainContent" class="section-block">
+    <main id="mainContent" class="section-block sitemap-page">
         <div class="container">
-            <div class="section-header text-center">
-                <h1 class="section-title">Mapa del Sitio Web</h1>
-                <p class="section-subtitle mx-auto">Índice completo de todas las secciones según tu perfil de usuario.</p>
+            <div class="sitemap-classic-header">
+                <h1 class="sitemap-classic-title"><i class="bi bi-diagram-3 me-2"></i>Mapa jerárquico del sitio web</h1>
+                <p class="sitemap-classic-subtitle">
+                    Este mapa muestra las rutas por niveles y se adapta al rol activo.
+                    <span class="sitemap-role-badge" data-role="paciente">Vista actual: Paciente</span>
+                    <span class="sitemap-role-badge" data-role="medico">Vista actual: Medico</span>
+                    <span class="sitemap-role-badge" data-role="farmaceutico">Vista actual: Farmaceutico</span>
+                    <span class="sitemap-role-badge" data-role="guest">Vista actual: Invitado</span>
+                </p>
             </div>
 
-            <div class="map-grid">
-                <a class="map-card" href="index.html" data-role="all">
-                    <div>
-                        <div class="fw-bold">Inicio</div>
-                        <div class="small text-muted">Página principal y presentación.</div>
-                    </div>
-                    <i class="bi bi-chevron-right"></i>
-                </a>
+            <nav class="sitemap-classic" aria-label="Mapa del sitio web de VitaClick">
+                <ol>
+                    <li data-role="all">
+                        <a href="index.html">Página de Inicio</a>
+                        <ol>
+                            <li data-role="guest"><a href="login.html">Iniciar sesión</a></li>
+                            <li data-role="all"><a href="sobre.html">Sobre nosotros</a></li>
+                            <li data-role="all"><a href="analisis.html">Análisis</a></li>
+                        </ol>
+                    </li>
 
-                <a class="map-card" href="salud.html" data-role="paciente">
-                    <div>
-                        <div class="fw-bold">Salud personal</div>
-                        <div class="small text-muted">Perfil médico, historial clínico y tratamientos.</div>
-                    </div>
-                    <i class="bi bi-chevron-right"></i>
-                </a>
+                    <li class="requires-auth" data-role="all">
+                        <a href="dashboard.html">Panel principal</a>
+                        <ol>
+                            <li data-role="paciente">
+                                <a href="dashboard.html">Área Paciente</a>
+                                <ol>
+                                    <li><a href="salud.html">Salud personal</a></li>
+                                    <li><a href="seguimiento.html">Seguimiento</a></li>
+                                    <li><a href="herramientas.html">Herramientas</a></li>
+                                    <li><a href="alertas.html">Centro de alertas</a></li>
+                                </ol>
+                            </li>
+                            <li data-role="medico">
+                                <a href="dashboard-medico.html">Área Médico</a>
+                                <ol>
+                                    <li><a href="dashboard-medico.html">Dashboard médico</a></li>
+                                    <li><a href="medico-comunicacion.html">Comunicación médico</a></li>
+                                </ol>
+                            </li>
+                            <li data-role="farmaceutico">
+                                <a href="dashboard-farmaceutico.html">Área Farmacéutico</a>
+                                <ol>
+                                    <li><a href="dashboard-farmaceutico.html">Dashboard farmacéutico</a></li>
+                                    <li><a href="farmaceutico-comunicacion.html">Comunicación farmacéutico</a></li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </li>
 
-                <a class="map-card" href="herramientas.html" data-role="paciente">
-                    <div>
-                        <div class="fw-bold">Herramientas</div>
-                        <div class="small text-muted">Farmacias, consulta de medicamentos e info oficial.</div>
-                    </div>
-                    <i class="bi bi-chevron-right"></i>
-                </a>
+                    <li data-role="all">
+                        <a href="mapa.html" aria-current="page">Mapa del sitio</a>
+                    </li>
 
-                <a class="map-card" href="seguimiento.html" data-role="paciente">
-                    <div>
-                        <div class="fw-bold">Seguimiento</div>
-                        <div class="small text-muted">Adherencia, racha y estadísticas.</div>
-                    </div>
-                    <i class="bi bi-chevron-right"></i>
-                </a>
-
-                <a class="map-card" href="dashboard.html" data-role="paciente">
-                    <div>
-                        <div class="fw-bold">Gestión de medicación</div>
-                        <div class="small text-muted">Tomas diarias y acciones urgentes.</div>
-                    </div>
-                    <i class="bi bi-chevron-right"></i>
-                </a>
-
-                <a class="map-card" href="dashboard-medico.html" data-role="medico">
-                    <div>
-                        <div class="fw-bold">Panel Médico</div>
-                        <div class="small text-muted">Supervisión de pacientes y prescripciones.</div>
-                    </div>
-                    <i class="bi bi-chevron-right"></i>
-                </a>
-
-                <a class="map-card" href="medico-comunicacion.html" data-role="medico">
-                    <div>
-                        <div class="fw-bold">Comunicación médica</div>
-                        <div class="small text-muted">Mensajería y alertas de pacientes.</div>
-                    </div>
-                    <i class="bi bi-chevron-right"></i>
-                </a>
-
-                <a class="map-card" href="dashboard-farmaceutico.html" data-role="farmaceutico">
-                    <div>
-                        <div class="fw-bold">Panel Farmacéutico</div>
-                        <div class="small text-muted">Dispensación y control de stock.</div>
-                    </div>
-                    <i class="bi bi-chevron-right"></i>
-                </a>
-
-                <a class="map-card" href="farmaceutico-comunicacion.html" data-role="farmaceutico">
-                    <div>
-                        <div class="fw-bold">Comunicación Farmacia</div>
-                        <div class="small text-muted">Alertas de interacciones y avisos.</div>
-                    </div>
-                    <i class="bi bi-chevron-right"></i>
-                </a>
-
-                <a class="map-card" href="analisis.html" data-role="all">
-                    <div>
-                        <div class="fw-bold">Análisis</div>
-                        <div class="small text-muted">Vídeos y detalles del estudio de usabilidad.</div>
-                    </div>
-                    <i class="bi bi-chevron-right"></i>
-                </a>
-
-                <a class="map-card" href="sobre.html" data-role="all">
-                    <div>
-                        <div class="fw-bold">Sobre nosotros</div>
-                        <div class="small text-muted">Información académica y contexto.</div>
-                    </div>
-                    <i class="bi bi-chevron-right"></i>
-                </a>
-
-                <a class="map-card" href="alertas.html" data-role="all">
-                    <div>
-                        <div class="fw-bold">Centro de alertas</div>
-                        <div class="small text-muted">Mensajes, recordatorios y emergencias.</div>
-                    </div>
-                    <i class="bi bi-chevron-right"></i>
-                </a>
-            </div>
-
-            <div class="dash-card mt-5">
-                <h5 class="mb-3">Características de accesibilidad</h5>
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <ul class="list-unstyled mb-0">
-                            <li class="mb-2">Navegación completa por teclado.</li>
-                            <li class="mb-2">Contraste de colores mejorado.</li>
-                            <li class="mb-2">Indicadores de foco visibles.</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-6">
-                        <ul class="list-unstyled mb-0">
-                            <li class="mb-2">Etiquetas ARIA en elementos clave.</li>
-                            <li class="mb-2">Tipografía clara en skin accesible.</li>
-                            <li class="mb-2">Estructura semántica HTML5.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+                    <li class="requires-auth" data-role="all">
+                        <a href="#" id="sitemapLogoutLink">Cerrar sesión</a>
+                    </li>
+                </ol>
+            </nav>
         </div>
     </main>
 
@@ -201,5 +139,19 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="../assets/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoutLink = document.getElementById('sitemapLogoutLink');
+            if (!logoutLink) return;
+
+            logoutLink.addEventListener('click', (event) => {
+                event.preventDefault();
+                localStorage.removeItem('vitaAuth');
+                localStorage.removeItem('vitaUserName');
+                localStorage.removeItem('vitaUserEmail');
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
 </body>
 </html>

@@ -525,6 +525,224 @@ body.skin-access .video-placeholder { background: #0b0b0b; color: var(--text); b
 }
 .map-card:hover { transform: translateY(-2px); }
 
+.sitemap-shell {
+    max-width: 980px;
+    margin: 0;
+}
+
+.sitemap-header {
+    text-align: left;
+    margin-bottom: 1rem;
+}
+
+.sitemap-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 1rem;
+    align-items: start;
+}
+
+.sitemap-side {
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid var(--border);
+    border-radius: 0.45rem;
+    padding: 0.8rem;
+}
+
+.sitemap-side-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0.45rem;
+}
+
+.sitemap-side-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sitemap-side-links li {
+    margin-bottom: 0.35rem;
+    font-size: 0.86rem;
+}
+
+.sitemap-side-links a {
+    color: var(--accent-strong);
+    text-decoration: underline;
+}
+
+.sitemap {
+    padding-left: 1rem;
+    margin: 0;
+}
+
+.sitemap > li {
+    margin-bottom: 0.8rem;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.sitemap > li > a,
+.sitemap > li > .sitemap-category {
+    color: var(--text);
+}
+
+.sitemap-category {
+    font-weight: 700;
+}
+
+.sitemap ol {
+    padding-left: 1.1rem;
+    margin: 0.25rem 0 0;
+    border-left: 1px solid var(--accent-soft);
+}
+
+.sitemap ol li {
+    font-weight: 500;
+    font-size: 0.92rem;
+    line-height: 1.6;
+}
+
+.sitemap a {
+    color: var(--accent-strong);
+    text-decoration: underline;
+    text-underline-offset: 0.14em;
+}
+
+.sitemap a:hover,
+.sitemap a:focus {
+    color: var(--accent);
+}
+
+body[data-page='mapa'] .section-block {
+    padding-top: 2.2rem;
+}
+
+.sitemap-page .container {
+    max-width: 980px;
+}
+
+.sitemap-classic-header {
+    max-width: 760px;
+    margin: 0 auto 1rem;
+    border-bottom: 2px solid #d3d8de;
+    padding-bottom: 0.45rem;
+}
+
+.sitemap-classic-subtitle {
+    margin: 0.45rem 0 0;
+    color: #3c4a5d;
+    font-size: 0.94rem;
+    line-height: 1.45;
+}
+
+.sitemap-role-badge {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 0.45rem;
+    margin-top: 0.35rem;
+    padding: 0.1rem 0.5rem;
+    border: 1px solid #c9d4e3;
+    border-radius: 999px;
+    background: #f2f6ff;
+    color: #28486f;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+body.role-paciente .sitemap-role-badge:not([data-role='paciente']),
+body.role-medico .sitemap-role-badge:not([data-role='medico']),
+body.role-farmaceutico .sitemap-role-badge:not([data-role='farmaceutico']),
+body.role-guest .sitemap-role-badge:not([data-role='guest']) {
+    display: none;
+}
+
+.sitemap-classic-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #1b2a44;
+}
+
+.sitemap-classic {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0.2rem 0 0;
+}
+
+.sitemap-classic ol {
+    margin: 0;
+    padding-left: 1.35rem;
+}
+
+.sitemap-classic > ol {
+    padding-left: 1.25rem;
+}
+
+.sitemap-classic li {
+    margin: 0.2rem 0;
+    line-height: 1.55;
+}
+
+.sitemap-classic > ol > li {
+    margin-top: 0.6rem;
+    font-weight: 700;
+    color: #233247;
+}
+
+.sitemap-classic a {
+    color: #1e5ea8;
+    text-decoration: underline;
+    text-underline-offset: 0.12em;
+    font-weight: 500;
+}
+
+.sitemap-disabled {
+    color: #6b7280;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.sitemap-note {
+    color: #7b8794;
+    font-size: 0.82rem;
+    font-style: italic;
+    margin-left: 0.2rem;
+}
+
+.sitemap-classic > ol > li > a {
+    color: #233247;
+    font-weight: 700;
+}
+
+.sitemap-classic ol ol {
+    border-left: 1px solid #d6d9dd;
+    margin-top: 0.2rem;
+    padding-left: 1rem;
+}
+
+body.role-guest .requires-auth {
+    display: none;
+}
+
+body[data-page='mapa'] .dash-card,
+body[data-page='mapa'] .map-card,
+body[data-page='mapa'] .sitemap-layout,
+body[data-page='mapa'] .sitemap-side {
+    all: unset;
+}
+
+@media (max-width: 992px) {
+    .sitemap-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .sitemap-classic-title {
+        font-size: 1.8rem;
+    }
+}
+
 .alert-card {
     background: var(--card-bg);
     border: 1px solid var(--border);
